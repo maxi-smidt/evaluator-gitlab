@@ -1,0 +1,114 @@
+{
+  "header": {
+    "btn-home": "Home",
+    "btn-plagscan": "PlagScan",
+    "btn-settings": "Settings",
+    "btn-logout": "Logout"
+  },
+  "login": {
+    "lbl-username": "Username",
+    "lbl-password": "Passwort",
+    "title": "Evaluator Login",
+    "submit": "Submit"
+  },
+  "shared": {
+    "forms": {
+      "userForm": {
+        "title": "User Form",
+        "btn-submit": "Submit",
+        "lbl-firstname": "Firstname",
+        "lbl-lastname": "Lastname",
+        "lbl-username": "Username",
+        "lbl-password": "Password",
+        "lbl-role": "Role",
+        "lbl-role-disabled": "Choose Role",
+        "error-500": "User already exists",
+        "error-else": "Could not create user"
+      }
+    }
+  },
+  "course": {
+    "courseView": {
+      "title-assignments": "Übungsaufgaben",
+      "title-ranking": "Kurs Ranking"
+    },
+    "editView": {
+      "group": "Gruppe",
+      "inactive": "Inaktiv",
+      "btn-save": "Save",
+      "btn-addGroup": "Gruppe hinzufügen"
+    },
+    "assignmentView": {
+      "group": "Gruppe",
+      "last_name": "Nachname",
+      "first_name": "Vorname",
+      "evaluation": "Bewertung",
+      "status": "Status",
+      "action": "Aktion",
+      "error-403": "You can only delete your own corrections"
+    },
+    "evaluateView": {
+      "annotations": "Anmerkungen",
+      "evaluateTable": {
+        "points": "Punkte",
+        "annotation": "Anmerkung"
+      },
+      "setExpense": "Zeitaufwand in Stunden"
+    }
+  },
+  "home": {
+    "title": "Willkommen",
+    "courses": "Deine Kurse",
+    "adminHome": {
+      "userList": {
+        "title": "Users",
+        "btn-save": "Save",
+        "table-header": [
+          "Vorname",
+          "Nachname",
+          "Username",
+          "Role",
+          "Aktiv"
+        ],
+        "conf-header": "Changeset",
+        "active": "active",
+        "inactive": "inactive"
+      },
+      "degreeProgramForm": {
+        "title": "Degree Program Form",
+        "btn-submit": "Submit",
+        "lbl-name": "Name",
+        "lbl-abbreviation": "Abbreviation",
+        "lbl-director": "Director",
+        "lbl-director-disabled": "Choose Director",
+        "error-500": "Degree Program already exists",
+        "error-else": "Could not create Degree Program"
+      },
+      "degreeProgramList": {
+        "title": "Degree Programs",
+        "table-header": [
+          "Name",
+          "Abbreviation",
+          "Director"
+        ],
+        "btn-save": "Save"
+      },
+      "role-choices": [
+        "ADMIN",
+        "DEGREE_PROGRAM_DIRECTOR",
+        "COURSE_LEADER",
+        "TUTOR"
+      ]
+    },
+    "dpdHome": {
+      "users": "User",
+      "courses": "Kurse",
+      "role-choices": [
+        "COURSE_LEADER",
+        "TUTOR"
+      ],
+      "programs": "Studiengänge",
+      "empty": "Keine Studiengänge verfügbar"
+    }
+  }
+}

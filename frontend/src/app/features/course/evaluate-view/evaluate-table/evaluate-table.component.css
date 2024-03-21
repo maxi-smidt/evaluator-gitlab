@@ -1,0 +1,29 @@
+.evaluation-table {
+  border-collapse: separate;
+  border-radius: 7px;
+  border-style: solid;
+  border-color: #b0bec5;
+  border-width: 2px;
+}
+
+.text {
+  width: 80%;
+}
+
+.points {
+  width: 15%;
+}
+
+.action {
+  width: 5%;
+}
+
+td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: normal;
+  color: #999;
+}
