@@ -1,8 +1,11 @@
 import io
 from django.http import HttpResponse
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, \
     RetrieveUpdateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, CourseLeader, DegreeProgramDirector
 from .models import Correction, DegreeProgram, AssignmentInstance, CourseInstance
@@ -12,6 +15,12 @@ from . import serializers
 from user.permissions import IsDegreeProgramDirector, IsAdmin
 # noinspection PyUnresolvedReferences
 from user.serializers import DegreeProgramDirectorSerializer
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def health_check(request):
+    return Response({"message": "Server is up and running"})
 
 
 class CourseInstanceListView(ListAPIView):

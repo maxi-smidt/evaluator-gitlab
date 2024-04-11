@@ -175,7 +175,7 @@ class CorrectionSerializer(serializers.ModelSerializer):
     student = StudentSerializer(read_only=True)
     tutor_username = serializers.SerializerMethodField(read_only=True)
 
-    student_id = serializers.IntegerField(write_only=True)
+    student_id = serializers.CharField(write_only=True)
     assignment_id = serializers.IntegerField(write_only=True)
 
     class Meta:
