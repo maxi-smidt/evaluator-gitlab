@@ -16,8 +16,8 @@ export class CorrectionService {
     return this.http.patch<Correction>(`correction/${correctionId}/`, patch)
   }
 
-  createCorrection(studentId: number, assignmentId: number, status: string | undefined = undefined) {
-    const body: {studentId: number, assignmentId: number, status?: string} = {
+  createCorrection(studentId: string, assignmentId: number, status: string | undefined = undefined) {
+    const body: {studentId: string, assignmentId: number, status?: string} = {
       studentId: studentId,
       assignmentId: assignmentId
     }

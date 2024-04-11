@@ -92,7 +92,7 @@ export class AssignmentViewComponent implements OnInit {
     }
   }
 
-  onStudentClick(studentId: number, state: string, correctionId: number) {
+  onStudentClick(studentId: string, state: string, correctionId: number) {
     if (state === 'CORRECTED' || state === 'NOT_SUBMITTED') {
       return
     }
@@ -107,7 +107,7 @@ export class AssignmentViewComponent implements OnInit {
     }
   }
 
-  notSubmittedAction(studentId: number, group: string) {
+  notSubmittedAction(studentId: string, group: string) {
     const status = 'NOT_SUBMITTED';
     this.correctionService.createCorrection(studentId, this.assignmentId, status).subscribe({
       next: () => {

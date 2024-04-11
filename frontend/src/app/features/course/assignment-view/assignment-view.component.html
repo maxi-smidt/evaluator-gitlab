@@ -35,7 +35,7 @@
 
                   @if (rowData['status'] === 'CORRECTED') {
                     <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
-                              (click)="editAction(rowData['id'])"></p-button>
+                              (click)="editAction(rowData['correctionId'])"></p-button>
                     <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary"
                               (click)="downloadAction(rowData['correctionId'])"></p-button>
                   }
