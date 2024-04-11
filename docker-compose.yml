@@ -15,9 +15,12 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
     volumes:
       - ./backend:/app
-    command: uwsgi --http :8000 --module backend.wsgi
+    env_file:
+      - .env
     environment:
       DATABASE_URL: postgres://${PG_DB_USER}:${PG_DB_PW}@db:5432/${PG_DB}
     depends_on:
@@ -27,6 +30,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        BUILD_MODE: ${BUILD_MODE}
     ports:
       - "80:80"
     depends_on:

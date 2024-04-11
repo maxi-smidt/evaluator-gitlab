@@ -1,4 +1,5 @@
 FROM node:latest as build-stage
+ARG BUILD_MODE
 
 WORKDIR /app
 
@@ -8,11 +9,18 @@ RUN npm install
 
 COPY ./ /app/
 
-RUN npm run build -- --output-path=./dist/out --configuration=production
+RUN if [ "$BUILD_MODE" = "production" ]; then \
+      npm run build -- --output-path=./dist/out --configuration=production; \
+    else \
+      npm run build -- --output-path=./dist/out --configuration=development; \
+    fi
+
 
 FROM nginx:alpine as production-stage
 
 COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

@@ -1,5 +1,6 @@
 # General
 .env.*
+.env*
 
 ## IDEs and editors
 .idea/

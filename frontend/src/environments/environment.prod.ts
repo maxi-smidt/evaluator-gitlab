@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://backend:8000/api'
+  apiUrl: 'http://evaluator.projekte.fh-hagenberg.at:8080/api'
 };
