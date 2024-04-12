@@ -33,7 +33,7 @@ services:
       args:
         BUILD_MODE: ${BUILD_MODE}
     ports:
-      - "80:80"
+      - "4200:4200"
     depends_on:
       - backend
 
