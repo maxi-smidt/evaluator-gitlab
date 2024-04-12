@@ -19,6 +19,11 @@ export class UserService {
     switchMap(user => user ? of(!!user) : this.getUser().pipe(map(fetchedUser => !!fetchedUser))),
   );
 
+  public isAuthenticated2: Observable<boolean> = this.currentUser.pipe(
+    map(user => !!user)
+  );
+
+
   constructor(private http: HttpClient) {
   }
 
