@@ -1,21 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from "./core/services/user.service";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'ms-root',
-  templateUrl: './app.component.html'
+  template: `<router-outlet/>`
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'frontend';
-
-  constructor(private userService: UserService) {
-  }
-
-  ngOnInit() {
-    this.isLoggedIn();
-  }
-
-  isLoggedIn() {
-    return this.userService.isAuthenticated;
+  constructor() {
   }
 }
