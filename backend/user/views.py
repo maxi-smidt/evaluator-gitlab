@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveAPIView, ListAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import User, DegreeProgramDirector
-from .serializers import UserSerializer, DegreeProgramDirectorSerializer
+from .serializers import UserSerializer, DegreeProgramDirectorSerializer, ChangePasswordSerializer
 from .permissions import IsClOrDpdOrAdmin, IsAdmin
 
 
@@ -74,3 +74,17 @@ class DegreeProgramDirectorListView(ListAPIView):
     permission_classes = [IsAdmin]
     serializer_class = DegreeProgramDirectorSerializer
     queryset = DegreeProgramDirector.objects.all()
+
+
+class ChangePasswordView(UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(request.data['new_password'])
+            user.save()
+            return Response({"message": "Password updated successfully"}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

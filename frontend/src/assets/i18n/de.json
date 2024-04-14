@@ -110,5 +110,16 @@
       "programs": "Studiengänge",
       "empty": "Keine Studiengänge verfügbar"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "change-pw": {
+      "title": "Passwort ändern",
+      "old-pw": "Altes Passwort",
+      "new-pw": "Neues Passwort",
+      "confirm-pw": "Passwort bestätigen",
+      "submit": "Submit",
+      "success":  "Passwort erfolgreich geändert"
+    }
   }
 }
