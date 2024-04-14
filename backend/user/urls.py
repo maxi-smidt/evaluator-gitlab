@@ -10,5 +10,6 @@ urlpatterns = [
     path('users/', UserListView.as_view(), name="users"),
     path('create-user/', UserCreateView.as_view(), name="create_user"),
     path('update-users/', UserUpdateView.as_view(), name="update_users"),
-    path('degree-program-directors/', DegreeProgramDirectorListView.as_view(), name="degree_program_directors")
+    path('degree-program-directors/', DegreeProgramDirectorListView.as_view(), name="degree_program_directors"),
+    path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
 ]
