@@ -146,6 +146,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         this.pointsDistribution[exc.name][subExc.name] = subExc.points + points;
       }
     }
+    this.annotationPoints = this.correction.draft.annotations.reduce((acc, entry) => acc + entry.points, 0);
   }
 
   protected updateSubExercisePoints(points: number, subExerciseName: string, exerciseName: string) {
