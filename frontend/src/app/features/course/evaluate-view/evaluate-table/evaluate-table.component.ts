@@ -31,6 +31,7 @@ export class EvaluateTableComponent {
 
   protected deleteRow(index: number) {
     this.tableData()!.splice(index, 1);
+    this.updatePointsAndEmit();
   }
 
   protected addRow() {
@@ -38,6 +39,10 @@ export class EvaluateTableComponent {
   }
 
   protected onInputChange() {
+    this.updatePointsAndEmit();
+  }
+
+  private updatePointsAndEmit() {
     this.currentPoints = this.defaultPoints()! + this.tableData()!.reduce((acc, entry) => acc + entry.points, 0);
     this.totalPoints.emit(this.currentPoints);
   }

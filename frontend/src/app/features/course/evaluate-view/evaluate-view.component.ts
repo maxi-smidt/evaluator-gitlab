@@ -12,6 +12,7 @@ import {BlockUIModule} from "primeng/blockui";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
 import {UserService} from "../../../core/services/user.service";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'ms-evaluate-view',
@@ -59,7 +60,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         label: 'Save',
         icon: 'pi pi-fw pi-save',
         command: () => {
-          this.saveCorrection();
+          this.saveCorrectionOnChange();
         }
       },
       {
@@ -73,7 +74,11 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         label: 'Download',
         icon: 'pi pi-fw pi-download',
         command: () => {
-          this.correctionService.downloadCorrection(this.correctionId!);
+          this.saveCorrection().subscribe({
+            complete: () => {
+              this.correctionService.downloadCorrection(this.correctionId!);
+          }
+          });
         }
       },
       {
@@ -112,7 +117,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
 
 
     this.intervalId = setInterval(() => {
-      this.saveCorrection();
+      this.saveCorrectionOnChange();
     }, 10000);
   }
 
@@ -123,18 +128,25 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   }
 
   private saveCorrection() {
-    if (this.hasChanged()) {
-      this.correctionService.patchCorrection(this.correctionId!, {
-        points: this.totalPoints,
-        draft: this.correction.draft
-      }).subscribe({
-        next: () => {
+    return this.correctionService.patchCorrection(this.correctionId!, {
+      points: this.totalPoints,
+      draft: this.correction.draft
+    }).pipe(
+      tap({
+        next: (response) => {
           this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
         },
-        error: () => {
+        error: (error) => {
           this.messageService.add({severity: 'error', summary: 'Error', detail: 'Could not save correction'});
+          throw error;
         }
       })
+    );
+  }
+
+  private saveCorrectionOnChange() {
+    if (this.hasChanged()) {
+      this.saveCorrection().subscribe();
     }
   }
 
