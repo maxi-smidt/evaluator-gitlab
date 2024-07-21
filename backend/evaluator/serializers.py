@@ -243,7 +243,7 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
 
     def get_partition(self, obj):
         partition = []
-        for tutor in obj.tutors.all():
+        for tutor in obj.tutors.all().order_by('last_name', 'first_name'):
             data = {'tutor': TutorSerializer(tutor).data, 'assignments': []}
             for assignment in obj.assignment_instances.all():
                 data['assignments'].append(TutorAIGroupsSerializer(assignment, context={'tutor': tutor}).data)
