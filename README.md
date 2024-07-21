@@ -2,7 +2,15 @@
 
 ## Frontend (Angular)
 
+### Run 
+
+![](documentation/images/frontend_run_config.png)
+
 ## Backend (Django)
+
+### Run
+
+![](documentation/images/backend_run_config.png)
 
 ## Database (Postgres)
 

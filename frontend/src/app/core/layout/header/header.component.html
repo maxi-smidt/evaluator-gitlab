@@ -10,19 +10,25 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home"
              routerLinkActive="active"
-             [routerLinkActiveOptions]="{exact: true}">{{ 'header.btn-home' | translate }}
+             [routerLinkActiveOptions]="{exact: true}">
+            <i class="pi pi-home"></i>
+            {{ 'header.btn-home' | translate }}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
              routerLink="/todo"
-             routerLinkActive="active">{{ 'header.btn-plagscan' | translate }}
+             routerLinkActive="active">
+            <i class="pi pi-shield"></i>
+            {{ 'header.btn-plagscan' | translate }}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
              routerLink="/settings"
-             routerLinkActive="active">{{ 'header.btn-settings' | translate }}
+             routerLinkActive="active">
+            <i class="pi pi-cog"></i>
+            {{ 'header.btn-settings' | translate }}
           </a>
         </li>
       </ul>
