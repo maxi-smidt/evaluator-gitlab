@@ -1,3 +1,4 @@
+import logging
 from io import BytesIO
 from weasyprint import HTML, CSS
 from yattag import Doc
@@ -34,7 +35,7 @@ class PdfMaker:
         self.tutor = correction.tutor.full_name
         self.student = correction.student.full_name
         self.date = datetime.now().strftime('%d.%m.%Y')
-        self.points = float(correction.points)
+        self.points = self.format_points(correction.points)
         self.draft = correction.draft
 
     def make_header(self):
@@ -138,3 +139,8 @@ class PdfMaker:
     @staticmethod
     def calculate_sub_exercise_points(sub_exercise):
         return sub_exercise['points'] + sum(note['points'] for note in sub_exercise['notes'])
+
+    @staticmethod
+    def format_points(points):
+        points = float(points)
+        return int(points) if points.is_integer() else round(points, 3)
