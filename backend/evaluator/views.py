@@ -51,7 +51,6 @@ class CourseInstanceDetailView(RetrieveAPIView):
 
 class AssignmentInstanceDetailView(RetrieveAPIView):
     serializer_class = serializers.DetailAssignmentInstanceSerializer
-    lookup_field = 'assignment_id'
 
     def get_queryset(self):
         user = self.request.user

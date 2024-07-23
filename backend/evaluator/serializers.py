@@ -120,7 +120,8 @@ class GroupedStudentSerializer(serializers.Serializer):
         enrollments = CourseEnrollment.objects.filter(course_instance=course_instance).exclude(group=-1)
         result = defaultdict(list)
         for enrollment in enrollments:
-            students_data = AssignmentInstanceStudentSerializer(enrollment.student, context={'assignment_instance': assignment_instance})
+            students_data = AssignmentInstanceStudentSerializer(enrollment.student,
+                                                                context={'assignment_instance': assignment_instance})
             result[enrollment.group].append(students_data.data)
         return result
 
