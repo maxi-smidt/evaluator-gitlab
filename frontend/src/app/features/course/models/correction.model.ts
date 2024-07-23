@@ -5,7 +5,7 @@ export interface Correction {
   tutorUsername: string,
   student: Student,
   assignment: CorrectionAssignment
-  expense: number,
+  expense: string | null,
   points: number,
   status: string,
   draft: Draft

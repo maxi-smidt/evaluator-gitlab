@@ -7,7 +7,29 @@
   <i class="pi pi-lock" style="font-size: 3rem"></i>
 </p-blockUI>
 
-<h3>{{ correction.assignment.name }} - {{ correction.student.firstName }} {{ correction.student.lastName }} | {{ totalPoints }}</h3>
+<h3>{{ correction.assignment.name }} - {{ correction.student.firstName }} {{ correction.student.lastName }}
+  | {{ totalPoints }}</h3>
+
+<div class="d-flex mb-3 mt-5 mb-3">
+  <p-toggleButton class="me-2"
+                  (onChange)="expenseToString()"
+                  [(ngModel)]="expenseNotSet"
+                  onLabel="{{'course.evaluateView.expenseNotSet' | translate}}"
+                  offLabel="{{'course.evaluateView.expenseSet' | translate}}"/>
+  <p-floatLabel>
+    <input id="hour" type="number" pInputText (change)="expenseToString()" [disabled]="expenseNotSet"
+           [(ngModel)]="expenseElement.hour" min="0"
+           max="120"/>
+    <label for="hour">{{'course.evaluateView.hours' | translate}}</label>
+  </p-floatLabel>
+  <p-floatLabel>
+    <input id="minute" type="number" pInputText (change)="expenseToString()" [disabled]="expenseNotSet"
+           [(ngModel)]="expenseElement.minute"
+           min="0"
+           max="59"/>
+    <label for="minute">{{'course.evaluateView.minutes' | translate}}</label>
+  </p-floatLabel>
+</div>
 
 <h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
 
@@ -31,16 +53,3 @@
     </ms-evaluate-table>
   }
 }
-
-<p-dialog [(visible)]="expenseDialogVisible">
-  <ng-template pTemplate="header">
-    <label for="expense" class="form-label">{{ 'course.evaluateView.setExpense' | translate }}</label>
-  </ng-template>
-  <ng-template pTemplate="footer">
-    <input type="number" class="form-control mb-3" id="expense" [(ngModel)]="correction.expense">
-    <p-button icon="pi pi-check" (click)="expenseDialogVisible = false;
-      messageService.add({severity: 'info', summary: 'Info', detail: 'Gespeichert'})" label="Speichern">
-    </p-button>
-  </ng-template>
-</p-dialog>
-

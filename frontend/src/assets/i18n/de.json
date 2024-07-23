@@ -53,7 +53,17 @@
         "points": "Punkte",
         "annotation": "Anmerkung"
       },
-      "setExpense": "Zeitaufwand in Stunden"
+      "confirmDialog": {
+        "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
+        "header": "Bestätigung"
+      },
+      "noChangesInfo": "Keine Änderungen",
+      "couldNotSave": "Korrektur konnte nicht gespeichert werden",
+      "saved": "Gespeichert",
+      "hours": "Stunden",
+      "minutes": "Minuten",
+      "expenseSet": "Zeitaufwand eingetragen",
+      "expenseNotSet": "Zeitaufwand nicht eingetragen"
     }
   },
   "home": {
