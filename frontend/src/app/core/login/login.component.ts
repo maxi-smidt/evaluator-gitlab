@@ -18,9 +18,9 @@ import {ButtonModule} from "primeng/button";
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  error: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     this.authService.login(this.username, this.password)
@@ -28,8 +28,8 @@ export class LoginComponent {
         next: () => {
           this.router.navigate(['home']).then();
         },
-        error: (err) => {
-          console.error('Login error:', err);
+        error: () => {
+          this.error = true;
         }
       });
   }

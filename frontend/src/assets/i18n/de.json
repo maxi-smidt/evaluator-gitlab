@@ -9,7 +9,8 @@
     "lbl-username": "Username",
     "lbl-password": "Passwort",
     "title": "Evaluator Login",
-    "submit": "Submit"
+    "submit": "Einloggen",
+    "error": "Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut."
   },
   "shared": {
     "forms": {

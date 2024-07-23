@@ -15,6 +15,11 @@
         <input type="password" class="form-control" id="password" required [(ngModel)]="password" name="password">
       </div>
     </div>
+
+    @if (error) {
+      <div class="text-center mb-3" style="color: red">{{ 'login.error' | translate }}</div>
+    }
+
     <div class="text-center">
       <p-button type="submit" label="{{ 'login.submit' | translate }}" [disabled]="!loginForm.valid" size="small"></p-button>
     </div>
