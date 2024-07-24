@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from enum import Enum
 # noinspection PyUnresolvedReferences
-from user.models import DegreeProgramDirector, CourseLeader, Tutor
+from user.models import DegreeProgramDirector, CourseLeader, Tutor, User
 
 
 class DegreeProgram(models.Model):
@@ -234,3 +234,21 @@ class TutorAssignment(models.Model):
 
     def __str__(self):
         return f"Tutor: {self.tutor}, Assignment: {self.assignment_instance}, Group: {self.groups}"
+
+
+class Report(models.Model):
+    class Type(models.TextChoices):
+        FEATURE = "FEATURE", "feature"
+        BUG = "BUG", "bug"
+
+    type = models.CharField(choices=Type,
+                            null=False)
+    title = models.CharField(max_length=255,
+                             null=False)
+    description = models.TextField(null=False)
+    submitter = models.ForeignKey(User,
+                                  on_delete=models.SET_NULL,
+                                  null=True)
+
+    def __str__(self):
+        return f"T{self.type}-Report: {self.title} ({self.submitter})"

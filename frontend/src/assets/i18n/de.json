@@ -3,6 +3,7 @@
     "btn-home": "Home",
     "btn-plagscan": "PlagScan",
     "btn-settings": "Settings",
+    "btn-report":  "Report",
     "btn-logout": "Logout"
   },
   "login": {
@@ -132,5 +133,12 @@
       "submit": "Submit",
       "success":  "Passwort erfolgreich geändert"
     }
+  },
+  "report": {
+    "title": "Feature-Requests & Bug Report",
+    "txt-title": "Titel",
+    "area-text": "Beschreibung",
+    "submit": "Abschicken",
+    "message": "Danke für das Feedback!"
   }
 }

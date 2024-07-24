@@ -13,5 +13,6 @@ urlpatterns = [
     path('student-group/<int:pk>/', views.StudentGroupRetrieveUpdateView.as_view(), name="student_group"),
     path('course-partition/<int:pk>/', views.TutorGroupRetrieveUpdateView.as_view(), name="course_partition"),
     path('degree-program/create/', views.DegreeProgramCreateView.as_view(), name="degree_program_create"),
-    path('degree-programs/', views.DegreeProgramListView.as_view(), name="degree_programs")
+    path('degree-programs/', views.DegreeProgramListView.as_view(), name="degree_programs"),
+    path('report/', views.ReportCreateView.as_view(), name="report"),
 ]

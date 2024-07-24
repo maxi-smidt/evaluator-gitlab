@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from .models import DegreeProgram, CourseInstance, AssignmentInstance, Correction, Student, CourseEnrollment, \
-    TutorAssignment, Assignment
+    TutorAssignment, Assignment, Report
 from collections import defaultdict
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, DegreeProgramDirector
@@ -271,3 +271,16 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
                     ta = TutorAssignment(tutor=tutor, assignment_instance=ai)
                 ta.groups = groups
                 ta.save()
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = '__all__'
+        read_only_fields = ['submitter']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        validated_data['submitter'] = user
+        return super().create(validated_data)

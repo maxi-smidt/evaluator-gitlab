@@ -3,6 +3,7 @@ import {AuthService} from "../../services/auth.service";
 import {ButtonModule} from "primeng/button";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {RouterLink, RouterLinkActive} from "@angular/router";
+import {ImageModule} from "primeng/image";
 
 @Component({
   selector: 'ms-header',
@@ -13,7 +14,8 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
     ButtonModule,
     TranslatePipe,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    ImageModule
   ]
 })
 export class HeaderComponent {

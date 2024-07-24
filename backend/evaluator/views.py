@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, CourseLeader, DegreeProgramDirector
-from .models import Correction, DegreeProgram, AssignmentInstance, CourseInstance
+from .models import Correction, DegreeProgram, AssignmentInstance, CourseInstance, Report
 from .utils.pdf_maker import PdfMaker
 from . import serializers
 # noinspection PyUnresolvedReferences
@@ -129,3 +129,8 @@ class DegreeProgramListView(ListAPIView):
             return DegreeProgram.objects.all()
         else:
             raise PermissionDenied("You do not have permission to access this resource.")
+
+
+class ReportCreateView(CreateAPIView):
+    serializer_class = serializers.ReportSerializer
+    queryset = Report.objects.all()
