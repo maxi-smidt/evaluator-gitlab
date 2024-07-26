@@ -93,7 +93,7 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
         fields = ['grouped_students']
 
     def get_grouped_students(self, obj):
-        enrollments = CourseEnrollment.objects.filter(course_instance=obj)
+        enrollments = CourseEnrollment.objects.filter(course_instance=obj).order_by('student__last_name')
 
         grouped = defaultdict(list)
         for enrollment in enrollments:

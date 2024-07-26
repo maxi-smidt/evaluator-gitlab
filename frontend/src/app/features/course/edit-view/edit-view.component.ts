@@ -9,6 +9,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {EditGroupComponent} from "./edit-group/edit-group.component";
 import {EditPartitionComponent} from "./edit-partition/edit-partition.component";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
+import {TranslationService} from "../../../shared/services/translation.service";
 
 @Component({
   selector: 'ms-edit-view',
@@ -34,7 +35,8 @@ export class EditViewComponent implements OnInit {
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private translationService: TranslationService) {
   }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class EditViewComponent implements OnInit {
       next: students => {
         this.groupedStudents = students.groupedStudents;
         this.adjustInactiveGroup();
-        this.groupedStudentsBefore = JSON.parse(JSON.stringify(students));
+        this.groupedStudentsBefore = JSON.parse(JSON.stringify(students.groupedStudents));
       }
     });
 
@@ -88,8 +90,8 @@ export class EditViewComponent implements OnInit {
   private confirmDialog(): Promise<boolean> {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
-        message: 'You have unsaved changes, are you sure you want to proceed?',
-        header: 'Confirmation',
+        message: this.translationService.translate('common.confirmDialog.message'),
+        header: this.translationService.translate('common.confirmDialog.header'),
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",
@@ -106,7 +108,7 @@ export class EditViewComponent implements OnInit {
 
   onSaveBtnClick() {
     if (!this.hasChanged()) {
-      this.messageService.add({severity: 'info', summary: 'Info', detail: 'No changes detected'});
+      this.messageService.add({severity: 'info', summary: 'Info', detail: this.translationService.translate('common.noChangesInfo')});
       return;
     }
 

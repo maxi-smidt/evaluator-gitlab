@@ -1,14 +1,23 @@
 {
+  "common": {
+    "noChangesInfo": "Keine Änderungen",
+    "lbl-username": "Username",
+    "lbl-password": "Passwort",
+    "btn-submit": "Abschicken",
+    "btn-save": "Speichern",
+    "confirmDialog": {
+      "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
+      "header": "Bestätigung"
+    }
+  },
   "header": {
     "btn-home": "Home",
     "btn-plagscan": "PlagScan",
     "btn-settings": "Settings",
-    "btn-report":  "Report",
+    "btn-report": "Report",
     "btn-logout": "Logout"
   },
   "login": {
-    "lbl-username": "Username",
-    "lbl-password": "Passwort",
     "title": "Evaluator Login",
     "submit": "Einloggen",
     "error": "Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut."
@@ -17,11 +26,8 @@
     "forms": {
       "userForm": {
         "title": "User Form",
-        "btn-submit": "Submit",
         "lbl-firstname": "Firstname",
         "lbl-lastname": "Lastname",
-        "lbl-username": "Username",
-        "lbl-password": "Password",
         "lbl-role": "Role",
         "lbl-role-disabled": "Choose Role",
         "error-500": "User already exists",
@@ -37,7 +43,6 @@
     "editView": {
       "group": "Gruppe",
       "inactive": "Inaktiv",
-      "btn-save": "Save",
       "btn-addGroup": "Gruppe hinzufügen"
     },
     "assignmentView": {
@@ -55,11 +60,6 @@
         "points": "Punkte",
         "annotation": "Anmerkung"
       },
-      "confirmDialog": {
-        "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
-        "header": "Bestätigung"
-      },
-      "noChangesInfo": "Keine Änderungen",
       "couldNotSave": "Korrektur konnte nicht gespeichert werden",
       "saved": "Gespeichert",
       "hours": "Stunden",
@@ -74,7 +74,6 @@
     "adminHome": {
       "userList": {
         "title": "Users",
-        "btn-save": "Save",
         "table-header": [
           "Vorname",
           "Nachname",
@@ -88,7 +87,6 @@
       },
       "degreeProgramForm": {
         "title": "Degree Program Form",
-        "btn-submit": "Submit",
         "lbl-name": "Name",
         "lbl-abbreviation": "Abbreviation",
         "lbl-director": "Director",
@@ -102,8 +100,7 @@
           "Name",
           "Abbreviation",
           "Director"
-        ],
-        "btn-save": "Save"
+        ]
       },
       "role-choices": [
         "ADMIN",
@@ -131,14 +128,17 @@
       "new-pw": "Neues Passwort",
       "confirm-pw": "Passwort bestätigen",
       "submit": "Submit",
-      "success":  "Passwort erfolgreich geändert"
+      "success": "Passwort erfolgreich geändert"
     }
   },
   "report": {
     "title": "Feature-Requests & Bug Report",
     "txt-title": "Titel",
     "area-text": "Beschreibung",
-    "submit": "Abschicken",
     "message": "Danke für das Feedback!"
+  },
+  "edit": {
+    "title-students": "Gruppen-Einteilung",
+    "title-partition": "Tutor-Einteilung"
   }
 }

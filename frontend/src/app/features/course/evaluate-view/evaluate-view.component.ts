@@ -162,7 +162,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
       this.saveCorrection(triggered).subscribe();
     } else {
       if (triggered) {
-        this.messageService.add({severity: 'info', summary: 'Info', detail: this.translate('course.evaluateView.noChangesInfo')});
+        this.messageService.add({severity: 'info', summary: 'Info', detail: this.translate('common.noChangesInfo')});
       }
     }
   }
@@ -224,8 +224,8 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   private confirmDialog(): Promise<boolean> {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
-        message: this.translate('course.evaluateView.confirmDialog.message'),
-        header: this.translate('course.evaluateView.confirmDialog.header'),
+        message: this.translate('common.confirmDialog.message'),
+        header: this.translate('common.confirmDialog.header'),
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",

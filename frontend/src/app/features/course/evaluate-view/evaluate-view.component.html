@@ -14,16 +14,25 @@
   <p-toggleButton class="me-2"
                   (onChange)="expenseToString()"
                   [(ngModel)]="expenseNotSet"
+                  [disabled]="readOnly"
                   onLabel="{{'course.evaluateView.expenseNotSet' | translate }}"
                   offLabel="{{'course.evaluateView.expenseSet' | translate }}"/>
   <p-floatLabel>
-    <input id="hour" type="number" pInputText (change)="expenseToString()" [disabled]="expenseNotSet"
-           [(ngModel)]="expenseElement.hour" min="0"
+    <input id="hour" type="number"
+           pInputText
+           (change)="expenseToString()"
+           [disabled]="expenseNotSet || readOnly"
+           [(ngModel)]="expenseElement.hour"
+           min="0"
            max="120"/>
     <label for="hour">{{'course.evaluateView.hours' | translate }}</label>
   </p-floatLabel>
   <p-floatLabel>
-    <input id="minute" type="number" pInputText (change)="expenseToString()" [disabled]="expenseNotSet"
+    <input id="minute"
+           type="number"
+           pInputText
+           (change)="expenseToString()"
+           [disabled]="expenseNotSet || readOnly"
            [(ngModel)]="expenseElement.minute"
            min="0"
            max="59"/>
