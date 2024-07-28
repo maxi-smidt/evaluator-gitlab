@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='Report',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('FEATURE', 'feature'), ('BUG', 'bug')])),
+                ('type', models.CharField(choices=[('FEATURE', 'feature'), ('BUG', 'bug')])),
                 ('title', models.CharField(max_length=255)),
                 ('description', models.TextField()),
                 ('submitter', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),

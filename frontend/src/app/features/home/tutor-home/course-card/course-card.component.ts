@@ -1,6 +1,6 @@
 import {Component, input} from '@angular/core';
 import {Router} from "@angular/router";
-import {xSimpleCourseInstance} from "../../../course/models/course.model";
+import {SimpleCourseInstance} from "../../../course/models/course.model";
 
 @Component({
   selector: 'ms-course-card',
@@ -8,7 +8,7 @@ import {xSimpleCourseInstance} from "../../../course/models/course.model";
   standalone: true
 })
 export class CourseCardComponent {
-  courseInstance = input.required<xSimpleCourseInstance>();
+  courseInstance = input.required<SimpleCourseInstance>();
 
   constructor(private router: Router) {
   }

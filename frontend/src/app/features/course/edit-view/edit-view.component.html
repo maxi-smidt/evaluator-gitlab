@@ -1,17 +1,30 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
-<div class="row">
-  <div class="col-5">
-    <h2>{{ 'edit.title-students' | translate }}</h2>
-    <ms-edit-group [groupedStudents]="groupedStudents"></ms-edit-group>
-  </div>
+<p-tabMenu
+  [model]="menuItems"
+  [activeItem]="activeItem"
+  (activeItemChange)="onActiveItemChange($event)"/>
 
-  <div class="col-7">
-    <h2>{{ 'edit.title-partition' | translate }}</h2>
-    <ms-edit-partition [partition]="partition" [groups]="groups"></ms-edit-partition>
-  </div>
+<div class="mt-4">
+  @switch (activeItem?.label) {
+    @case ('Gruppeneinteilung') {
+      <h2 class="mb-3">{{ 'edit.title-students' | translate }}</h2>
+      <ms-edit-group [groupedStudents]="groupedStudents"></ms-edit-group>
+    }
+    @case ('Gruppenzuteilung') {
+      <h2 class="mb-3">{{ 'edit.title-partition' | translate }}</h2>
+      <ms-edit-partition [partition]="partition" [groups]="groups"></ms-edit-partition>
+    }
+    @case ('Allgemein') {
+      <h2 class="mb-3">{{ 'edit.title-general' | translate }}</h2>
+      <ms-edit-general [course]="course"></ms-edit-general>
+    }
+  }
 </div>
-<div class="text-center">
-  <p-button label="{{ 'common.btn-save' | translate }}" class="mt-2 mb-5 m-1" (click)="onSaveBtnClick()" size="small"></p-button>
+
+<div class="text-center mt-3">
+  <p-button label="{{ 'common.btn-save' | translate }}"
+            class="mt-2 mb-5 m-1" (click)="onSaveBtnClick()"
+            size="small"></p-button>
 </div>

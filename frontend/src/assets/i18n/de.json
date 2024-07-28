@@ -8,7 +8,8 @@
     "confirmDialog": {
       "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
       "header": "Bestätigung"
-    }
+    },
+    "saved": "Gespeichert"
   },
   "header": {
     "btn-home": "Home",
@@ -52,6 +53,7 @@
       "evaluation": "Bewertung",
       "status": "Status",
       "action": "Aktion",
+      "lateSubmission": "Joker",
       "error-403": "You can only delete your own corrections"
     },
     "evaluateView": {
@@ -61,11 +63,14 @@
         "annotation": "Anmerkung"
       },
       "couldNotSave": "Korrektur konnte nicht gespeichert werden",
-      "saved": "Gespeichert",
+      "days": "Tage",
       "hours": "Stunden",
       "minutes": "Minuten",
       "expenseSet": "Zeitaufwand eingetragen",
-      "expenseNotSet": "Zeitaufwand nicht eingetragen"
+      "expenseNotSet": "Zeitaufwand nicht eingetragen",
+      "lateSubmitted": "Joker eingelöst",
+      "notLateSubmitted": "Joker nicht eingelöst",
+      "penalty": "Abzug"
     }
   },
   "home": {
@@ -127,7 +132,6 @@
       "old-pw": "Altes Passwort",
       "new-pw": "Neues Passwort",
       "confirm-pw": "Passwort bestätigen",
-      "submit": "Submit",
       "success": "Passwort erfolgreich geändert"
     }
   },
@@ -138,7 +142,11 @@
     "message": "Danke für das Feedback!"
   },
   "edit": {
-    "title-students": "Gruppen-Einteilung",
-    "title-partition": "Tutor-Einteilung"
+    "title-students": "Gruppeneinteilung",
+    "title-partition": "Gruppenzuteilung",
+    "title-general": "Allgemein",
+    "allow-late-submission": "Verspätete Abgabe (Joker) erlaubt",
+    "late-submission-penalty": "Abzug für verspätete Abgabe",
+    "step-size": "Punkt-Schritt bei Bewertung"
   }
 }

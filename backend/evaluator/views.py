@@ -24,7 +24,7 @@ def health_check(request):
 
 
 class CourseInstanceListView(ListAPIView):
-    serializer_class = serializers.CourseInstanceSerializer
+    serializer_class = serializers.SimpleCourseInstanceSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -35,9 +35,16 @@ class CourseInstanceListView(ListAPIView):
             raise ValueError("other roles not defined")
 
 
-class CourseInstanceDetailView(RetrieveAPIView):
-    serializer_class = serializers.DetailCourseInstanceSerializer
+class CourseInstanceDetailView(RetrieveUpdateAPIView):
     lookup_field = 'course_id'
+
+    def get_serializer_class(self):
+        level = self.request.query_params.get('level')
+        if level == 'simple':
+            return serializers.SimpleCourseInstanceSerializer
+        if level == 'detail':
+            return serializers.DetailCourseInstanceSerializer
+        return serializers.CourseInstanceSerializer
 
     def get_queryset(self):
         user = self.request.user

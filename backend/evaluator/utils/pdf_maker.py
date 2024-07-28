@@ -1,4 +1,3 @@
-import logging
 from io import BytesIO
 from weasyprint import HTML, CSS
 from yattag import Doc
@@ -31,18 +30,21 @@ class PdfMaker:
     ''')
 
     def __init__(self, correction: Correction):
-        self.assignment = correction.assignment_instance.assignment.name
+        self.assignment_name = correction.assignment_instance.assignment.name
         self.tutor = correction.tutor.full_name
         self.student = correction.student.full_name
         self.date = datetime.now().strftime('%d.%m.%Y')
         self.points = self.format_points(correction.points)
         self.draft = correction.draft
+        self.course_instance = correction.assignment_instance.course_instance
+        self.late_submitted_days = correction.late_submitted_days
+        self.late_penalty = self.course_instance.late_submission_penalty
 
     def make_header(self):
         doc, tag, text = Doc().tagtext()
         with tag('header'):
             with tag('h1'):
-                text(self.assignment)
+                text(self.assignment_name)
             with tag('p', klass='date'):
                 text(self.date)
             with tag('p'):
@@ -50,7 +52,12 @@ class PdfMaker:
             with tag('p'):
                 text('Student: ', self.student)
             with tag('p', klass='points'):
-                text('Points: ', self.points)
+                text('Punkte: ', self.points)
+            if self.late_submitted_days > 0:
+                assert self.course_instance.allow_late_submission
+                with tag('p'):
+                    text(f'Verspätete Abgabe {self.late_submitted_days} Tag(e): '
+                         f'{self.format_points(self.late_submitted_days * -self.late_penalty)} Punkte')
         return doc.getvalue()
 
     def make_body(self):

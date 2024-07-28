@@ -48,7 +48,8 @@ export class AssignmentViewComponent implements OnInit {
       {field: 'firstName', header: this.translate('course.assignmentView.first_name')},
       {field: 'points', header: this.translate('course.assignmentView.evaluation')},
       {field: 'status', header: this.translate('course.assignmentView.status')},
-      {field: 'action', header: this.translate('course.assignmentView.action')}
+      {field: 'action', header: this.translate('course.assignmentView.action')},
+      {field: 'lateSubmission', header: this.translate('course.assignmentView.lateSubmission')}
     ]
     this.groups = [];
     this.assignmentId = -1;

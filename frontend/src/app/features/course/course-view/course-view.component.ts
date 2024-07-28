@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {xCourseInstance} from "../models/course.model";
+import {DetailCourseInstance, DetailLevel} from "../models/course.model";
 import {CourseService} from "../services/course.service";
 import {ButtonModule} from "primeng/button";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
@@ -20,7 +20,7 @@ import {SimpleAssignment} from "../models/assignment.model";
   ]
 })
 export class CourseViewComponent implements OnInit {
-  courseInstance: xCourseInstance | undefined;
+  courseInstance: DetailCourseInstance | undefined;
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
@@ -29,7 +29,7 @@ export class CourseViewComponent implements OnInit {
 
   ngOnInit() {
     const courseId = this.route.snapshot.params['courseId'];
-    this.courseService.getFullCourse(Number(courseId)).subscribe({
+    this.courseService.getCourse<DetailCourseInstance>(Number(courseId), DetailLevel.DETAIL).subscribe({
       next: course => {
         this.courseInstance = course;
       }
@@ -58,5 +58,4 @@ export class CourseViewComponent implements OnInit {
   onEditBtnClick() {
     this.router.navigate(['edit'], {relativeTo: this.route}).then();
   }
-
 }

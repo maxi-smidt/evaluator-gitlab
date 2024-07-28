@@ -23,6 +23,7 @@ export class EvaluateTableComponent {
   defaultPoints = input.required<number>();
   tableData = input.required<Entry[]>();
   readOnly = input.required<boolean>();
+  pointStepSize = input.required<number>();
 
   @Output()
   totalPoints = new EventEmitter<number>();
@@ -30,12 +31,12 @@ export class EvaluateTableComponent {
   currentPoints: number = 0;
 
   protected deleteRow(index: number) {
-    this.tableData()!.splice(index, 1);
+    this.tableData().splice(index, 1);
     this.updatePointsAndEmit();
   }
 
   protected addRow() {
-    this.tableData()!.push({text: '', points: 0});
+    this.tableData().push({text: '', points: 0});
   }
 
   protected onInputChange() {
@@ -43,7 +44,7 @@ export class EvaluateTableComponent {
   }
 
   private updatePointsAndEmit() {
-    this.currentPoints = this.defaultPoints()! + this.tableData()!.reduce((acc, entry) => acc + entry.points, 0);
+    this.currentPoints = this.defaultPoints() + this.tableData().reduce((acc, entry) => acc + entry.points, 0);
     this.totalPoints.emit(this.currentPoints);
   }
 }

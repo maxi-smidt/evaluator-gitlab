@@ -23,12 +23,18 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['name', 'abbreviation']
 
 
-class CourseInstanceSerializer(serializers.ModelSerializer):
+class SimpleCourseInstanceSerializer(serializers.ModelSerializer):
     course = CourseSerializer(read_only=True)
 
     class Meta:
         model = CourseInstance
         fields = ['id', 'year', 'course']
+
+
+class CourseInstanceSerializer(SimpleCourseInstanceSerializer):
+    class Meta(SimpleCourseInstanceSerializer.Meta):
+        fields = SimpleCourseInstanceSerializer.Meta.fields + ['allow_late_submission', 'late_submission_penalty',
+                                                               'point_step_size']
 
 
 class AssignmentInstanceSerializer(serializers.ModelSerializer):
@@ -61,10 +67,11 @@ class AssignmentInstanceStudentSerializer(serializers.ModelSerializer):
     points = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     correction_id = serializers.SerializerMethodField()
+    late_submission = serializers.SerializerMethodField()
 
     class Meta:
         model = Student
-        fields = ['id', 'first_name', 'last_name', 'points', 'status', 'correction_id']
+        fields = ['id', 'first_name', 'last_name', 'points', 'status', 'correction_id', 'late_submission']
 
     def get_points(self, obj):
         correction = obj.co_student.filter(assignment_instance=self.context['assignment_instance']).first()
@@ -77,6 +84,12 @@ class AssignmentInstanceStudentSerializer(serializers.ModelSerializer):
     def get_correction_id(self, obj):
         correction = obj.co_student.filter(assignment_instance=self.context['assignment_instance']).first()
         return correction.id if correction else None
+
+    def get_late_submission(self, obj):
+        course = self.context['assignment_instance'].course_instance
+        assignments = course.assignment_instances.all()
+        corrections = obj.co_student.filter(assignment_instance__in=assignments).all()
+        return corrections.filter(late_submitted_days__gt=0).exists()
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -182,7 +195,7 @@ class CorrectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Correction
         fields = ['id', 'tutor_username', 'student', 'assignment', 'expense', 'points', 'status', 'draft', 'student_id',
-                  'assignment_id']
+                  'assignment_id', 'late_submitted_days']
 
     def get_assignment(self, obj):
         return MiniAssignmentSerializer(instance=obj.assignment_instance.assignment).data

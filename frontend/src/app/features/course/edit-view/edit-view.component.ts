@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 import {Student} from "../models/student.model";
 import {EditPartition} from "../models/edit-partition.model";
 import {CourseService} from "../services/course.service";
@@ -10,6 +10,9 @@ import {EditGroupComponent} from "./edit-group/edit-group.component";
 import {EditPartitionComponent} from "./edit-partition/edit-partition.component";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {TranslationService} from "../../../shared/services/translation.service";
+import {TabMenuModule} from "primeng/tabmenu";
+import {EditGeneralComponent} from "./edit-general/edit-general.component";
+import {CourseInstance, DetailLevel} from "../models/course.model";
 
 @Component({
   selector: 'ms-edit-view',
@@ -20,17 +23,28 @@ import {TranslationService} from "../../../shared/services/translation.service";
     ConfirmDialogModule,
     EditGroupComponent,
     EditPartitionComponent,
-    TranslatePipe
+    TranslatePipe,
+    TabMenuModule,
+    EditGeneralComponent
   ]
 })
 export class EditViewComponent implements OnInit {
+  menuItems: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
+
+  // grouped students
   courseId: number = -1;
   groupedStudents: { [groupNr: string]: Student[] } = {};
   groupedStudentsBefore: { [groupNr: string]: Student[] } = {};
 
+  // group partition
   partition: EditPartition[] = [];
   partitionBefore: EditPartition[] = [];
   groups: number[] = [];
+
+  // general
+  course: CourseInstance = {} as CourseInstance;
+  courseBefore: CourseInstance = {} as CourseInstance;
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
@@ -40,6 +54,15 @@ export class EditViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.menuItems = [
+      {label: this.translationService.translate('edit.title-students')},
+      {label: this.translationService.translate('edit.title-partition')},
+      {label: this.translationService.translate('edit.title-general')}
+    ];
+
+    this.activeItem = this.menuItems[0]
+
+    // grouped students
     this.courseId = this.route.parent!.snapshot.params['courseId'];
     this.courseService.getStudentsInGroupsByCourse(this.courseId).subscribe({
       next: students => {
@@ -49,13 +72,26 @@ export class EditViewComponent implements OnInit {
       }
     });
 
+    // group partition
     this.courseService.getTutorAssignmentPartition(this.courseId).subscribe({
-      next: value => {
-        this.partition = value.partition;
-        this.partitionBefore = JSON.parse(JSON.stringify(value.partition));
-        this.groups = value.groups;
+      next: partition => {
+        this.partition = partition.partition;
+        this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));
+        this.groups = partition.groups;
       }
     });
+
+    // general
+    this.courseService.getCourse<CourseInstance>(this.courseId, DetailLevel.NORMAL).subscribe({
+      next: course => {
+        this.course = course;
+        this.courseBefore = JSON.parse(JSON.stringify(course));
+      }
+    });
+  }
+
+  onActiveItemChange(event: MenuItem) {
+    this.activeItem = event;
   }
 
   adjustInactiveGroup() {
@@ -65,7 +101,7 @@ export class EditViewComponent implements OnInit {
   }
 
   private hasChanged() {
-    return this.groupHasChanged() || this.partitionHasChanged();
+    return this.groupHasChanged() || this.partitionHasChanged() || this.courseHasChanged();
   }
 
   private groupHasChanged() {
@@ -74,6 +110,10 @@ export class EditViewComponent implements OnInit {
 
   private partitionHasChanged() {
     return JSON.stringify(this.partition) !== JSON.stringify(this.partitionBefore);
+  }
+
+  private courseHasChanged() {
+    return JSON.stringify(this.course) !== JSON.stringify(this.courseBefore);
   }
 
   checkChanges() {
@@ -108,25 +148,52 @@ export class EditViewComponent implements OnInit {
 
   onSaveBtnClick() {
     if (!this.hasChanged()) {
-      this.messageService.add({severity: 'info', summary: 'Info', detail: this.translationService.translate('common.noChangesInfo')});
+      this.showInfoMessage('common.noChangesInfo');
       return;
     }
 
     if (this.groupHasChanged()) {
-      this.courseService.setStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
+      this.courseService.patchStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
         next: groupedStudents => {
           this.groupedStudents = groupedStudents.groupedStudents;
           this.groupedStudentsBefore = JSON.parse(JSON.stringify(this.groupedStudents));
+          this.showInfoMessage('common.saved');
         }
       });
     }
 
     if (this.partitionHasChanged()) {
       this.courseService.putAssignmentPartition(this.courseId, this.partition).subscribe({
-        next: () => {
-          this.partitionBefore = JSON.parse(JSON.stringify(this.partition));
+        next: partition => {
+          this.partition = partition.partition;
+          this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));
+          this.groups = partition.groups;
+          this.showInfoMessage('common.saved');
         }
       });
     }
+
+    if (this.courseHasChanged()) {
+      this.courseService.patchCourse<CourseInstance>(this.courseId, DetailLevel.NORMAL, {
+        allowLateSubmission: this.course.allowLateSubmission,
+        lateSubmissionPenalty: this.course.lateSubmissionPenalty,
+        pointStepSize: this.course.pointStepSize
+      }).subscribe({
+        next: course => {
+          this.course = course;
+          this.courseBefore = JSON.parse(JSON.stringify(course));
+          this.showInfoMessage('common.saved');
+        }
+      });
+    }
+  }
+
+  showInfoMessage(key: string) {
+    const text = this.translationService.translate(key);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Info',
+      detail: text
+    });
   }
 }

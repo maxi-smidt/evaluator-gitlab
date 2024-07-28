@@ -8,7 +8,8 @@ export interface Correction {
   expense: string | null,
   points: number,
   status: string,
-  draft: Draft
+  draft: Draft,
+  lateSubmittedDays: number
 }
 
 interface CorrectionAssignment {

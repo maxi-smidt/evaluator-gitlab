@@ -116,6 +116,19 @@ class CourseInstance(models.Model):
     assignments = models.ManyToManyField(Assignment,
                                          through='AssignmentInstance')
 
+    allow_late_submission = models.BooleanField(null=False,
+                                                default=False)
+
+    late_submission_penalty = models.DecimalField(decimal_places=3,
+                                                  max_digits=6,
+                                                  default=None,
+                                                  null=True)
+
+    point_step_size = models.DecimalField(decimal_places=3,
+                                          max_digits=6,
+                                          null=False,
+                                          default=1)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['year', 'course'], name='course_instance_pk')
@@ -200,6 +213,8 @@ class Correction(models.Model):
                                  max_digits=5,
                                  null=True)
     draft = models.JSONField(null=True)
+    late_submitted_days = models.IntegerField(null=False,
+                                              default=0)
 
     def __str__(self):
         return f"{self.student} - {self.assignment_instance} - {self.tutor} - {self.status}"

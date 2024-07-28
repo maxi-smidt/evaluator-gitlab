@@ -18,6 +18,8 @@ import {InputTextModule} from "primeng/inputtext";
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {Student} from "../models/student.model";
 import {TranslationService} from "../../../shared/services/translation.service";
+import {CourseService} from "../services/course.service";
+import {CourseInstance, DetailLevel} from "../models/course.model";
 
 @Component({
   selector: 'ms-evaluate-view',
@@ -43,6 +45,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   assignmentId: number;
   correctionId: number | undefined;
 
+  course: CourseInstance;
   correction: Correction;
   correctionBefore: Correction;
   contextMenuItems: MenuItem[];
@@ -50,11 +53,14 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   displayLock: boolean = false;
   readOnly: boolean = false;
 
-  expenseElement: {minute: number, hour: number} = {minute: 0, hour: 0};
+  expenseElement: { minute: number, hour: number } = {minute: 0, hour: 0};
   expenseNotSet: boolean = false;
 
   annotationPoints: number = 0;
   pointsDistribution: { [exerciseKey: string]: { [subExerciseKey: string]: number } } = {};
+
+  hasLateSubmitted: boolean = false;
+  lateSubmissionPenalty: number = 0;
 
   constructor(private correctionService: CorrectionService,
               private route: ActivatedRoute,
@@ -62,8 +68,10 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
               protected messageService: MessageService,
               private userService: UserService,
               private router: Router,
-              private translationService: TranslationService) {
-    this.correction = {id: -1, expense: null, points: -1, draft: {} as Draft, status: "", student: {} as Student, assignment: {points: -1, name: ""}, tutorUsername: ""};
+              private translationService: TranslationService,
+              private courseService: CourseService) {
+    this.correction = {draft: {} as Draft, student: {} as Student, assignment: {points: -1, name: ""}} as Correction;
+    this.course = {pointStepSize: 0} as CourseInstance;
     this.correctionBefore = {} as Correction;
     this.assignmentId = -1;
     this.courseId = -1;
@@ -110,10 +118,18 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         this.correctionService.getCorrection(this.correctionId!).subscribe({
           next: correction => {
             this.correction = correction;
+            this.hasLateSubmitted = this.correction.lateSubmittedDays > 0;
             this.parseExpense();
             this.correctionBefore = JSON.parse(JSON.stringify(correction));
             this.displayLock = this.correction.status === 'CORRECTED';
             this.readOnly = correction.tutorUsername !== user.username;
+
+            this.courseService.getCourse<CourseInstance>(this.courseId, DetailLevel.NORMAL).subscribe({
+              next: course => {
+                this.course = course;
+                this.calculateLateSubmission();
+              }
+            });
           },
           complete: () => {
             this.initPoints();
@@ -121,7 +137,6 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         });
       }
     });
-
 
     this.interval = setInterval(() => {
       this.saveCorrectionIfChanged();
@@ -138,19 +153,25 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     return this.correctionService.patchCorrection(this.correctionId!, {
       points: this.totalPoints,
       draft: this.correction.draft,
-      expense: this.correction.expense
+      expense: this.correction.expense,
+      lateSubmittedDays: this.correction.lateSubmittedDays
     }).pipe(
       tap({
         next: (response) => {
           if (triggered) {
-            this.messageService.add({severity: 'info', summary: 'Info', detail: this.translate('course.evaluateView.saved')});
+            this.messageService.add({severity: 'info', summary: 'Info', detail: this.translate('common.saved')});
           }
           this.correction = response;
           this.parseExpense();
           this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
+          this.calculateLateSubmission();
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Error', detail: this.translate('course.evaluateView.couldNotSave')});
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: this.translate('course.evaluateView.couldNotSave')
+          });
           throw error;
         }
       })
@@ -193,6 +214,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         totalPoints += points;
       });
     });
+    totalPoints += this.lateSubmissionPenalty;
     return totalPoints;
   }
 
@@ -244,7 +266,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     return this.translationService.translate(key);
   }
 
-  private parseExpense(){
+  private parseExpense() {
     const expense = this.correction.expense;
     if (expense !== null) {
       const day: number = this.parseDays(expense);
@@ -277,5 +299,14 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   private parseMinutes(duration: string): number {
     const timePart = duration.split(' ').pop();
     return parseInt(timePart!.split(':')[1], 10);
+  }
+
+  protected calculateLateSubmission() {
+    this.lateSubmissionPenalty = (this.course?.lateSubmissionPenalty ?? 0) * -this.correction.lateSubmittedDays;
+  }
+
+  protected onHasLateSubmittedClick() {
+    this.correction.lateSubmittedDays = this.hasLateSubmitted ? 1 : 0;
+    this.calculateLateSubmission();
   }
 }

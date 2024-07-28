@@ -22,12 +22,12 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr (dblclick)="onStudentClick(rowData['id'], rowData['status'], rowData['correctionId'])">
             <td *ngFor="let col of columns">
-              <ng-container *ngIf="col.field === 'status'; else otherFields">
+              <ng-container *ngIf="col.field === 'status'; else actionField">
                 <p-tag [severity]="getSeverity(rowData[col.field])">{{ rowData[col.field] }}</p-tag>
               </ng-container>
 
-              <ng-template #otherFields>
-                <ng-container *ngIf="col.field === 'action'; else defaultFields">
+              <ng-template #actionField>
+                <ng-container *ngIf="col.field === 'action'; else lateSubmissionField">
                   @if (rowData['status'] === 'UNDEFINED') {
                     <p-button icon="pi pi-file-excel" [rounded]="true" [text]="true" severity="secondary"
                               (click)="notSubmittedAction(rowData['id'], group)"></p-button>
@@ -45,9 +45,18 @@
                               (click)="deleteAction(rowData['correctionId'], group)"></p-button>
                   }
                 </ng-container>
-                <ng-template #defaultFields>
+
+                <ng-template #lateSubmissionField>
+                  <ng-container *ngIf="col.field === 'lateSubmission'; else defaultFields">
+                    @if (rowData['lateSubmission']) {
+                      <i class="pi pi-flag-fill" style="color: red"></i>
+                    }
+                  </ng-container>
                 </ng-template>
-                {{ rowData[col.field] }}
+
+                <ng-template #defaultFields>
+                  {{ rowData[col.field] }}
+                </ng-template>
               </ng-template>
             </td>
           </tr>

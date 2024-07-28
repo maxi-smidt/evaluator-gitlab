@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {NewUser, User} from "../models/user.models";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, distinctUntilChanged, map, Observable, of, switchMap, tap} from "rxjs";
-import {xSimpleCourseInstance} from "../../features/course/models/course.model";
+import {SimpleCourseInstance} from "../../features/course/models/course.model";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   getUserCourses() {
-    return this.http.get<xSimpleCourseInstance[]>('courses/')
+    return this.http.get<SimpleCourseInstance[]>('courses/')
   }
 
   registerUser(user: NewUser) {

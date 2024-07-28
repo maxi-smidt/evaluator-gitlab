@@ -25,7 +25,7 @@
            [(ngModel)]="expenseElement.hour"
            min="0"
            max="120"/>
-    <label for="hour">{{'course.evaluateView.hours' | translate }}</label>
+    <label for="hour">{{ 'course.evaluateView.hours' | translate }}</label>
   </p-floatLabel>
   <p-floatLabel>
     <input id="minute"
@@ -36,8 +36,43 @@
            [(ngModel)]="expenseElement.minute"
            min="0"
            max="59"/>
-    <label for="minute">{{'course.evaluateView.minutes' | translate }}</label>
+    <label for="minute">{{ 'course.evaluateView.minutes' | translate }}</label>
   </p-floatLabel>
+
+  @if (course.allowLateSubmission) {
+    <div class="ms-auto d-flex">
+      <p-toggleButton
+        class="ms-5 me-2"
+        [(ngModel)]="hasLateSubmitted"
+        (click)="onHasLateSubmittedClick()"
+        [disabled]="readOnly"
+        onLabel="{{'course.evaluateView.lateSubmitted' | translate }}"
+        offLabel="{{'course.evaluateView.notLateSubmitted' | translate }}"/>
+
+      <p-floatLabel>
+        <input id="day"
+               type="number"
+               pInputText
+               [disabled]="!hasLateSubmitted"
+               (change)="calculateLateSubmission()"
+               [(ngModel)]="correction.lateSubmittedDays"
+               min="1"
+               max="25"/>
+        <label for="minute">{{ 'course.evaluateView.days' | translate }}</label>
+      </p-floatLabel>
+
+      <p-floatLabel>
+        <input id="penalty"
+               type="number"
+               pInputText
+               [disabled]="true"
+               [(ngModel)]="lateSubmissionPenalty"
+               min="-1000"
+               max="0"/>
+        <label for="minute">{{ 'course.evaluateView.penalty' | translate }}</label>
+      </p-floatLabel>
+    </div>
+  }
 </div>
 
 <h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
@@ -45,6 +80,7 @@
 <ms-evaluate-table [tableData]="correction.draft.annotations"
                    [defaultPoints]="0"
                    [readOnly]="readOnly"
+                   [pointStepSize]="course.pointStepSize"
                    (totalPoints)="updateAnnotationPoints($event)">
 </ms-evaluate-table>
 
@@ -58,6 +94,7 @@
     <ms-evaluate-table [tableData]="sub_exercise.notes"
                        [defaultPoints]="sub_exercise.points"
                        [readOnly]="readOnly"
+                       [pointStepSize]="course.pointStepSize"
                        (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)">
     </ms-evaluate-table>
   }

@@ -12,21 +12,20 @@
         <tr>
           <td class="text">
             <p-editor [(ngModel)]="entry.text"
-                      [readonly]="readOnly()!">
+                      [readonly]="readOnly()">
             </p-editor>
           </td>
           <td>
             <p-inputNumber [size]="1"
-                           [min]="defaultPoints() !== 0 ? defaultPoints()! * -1 : undefined"
+                           [min]="defaultPoints() !== 0 ? defaultPoints() * -1 : undefined"
                            [ngModel]="entry.points"
                            (ngModelChange)="entry.points = $event ? + $event : 0"
                            [showButtons]="true" buttonLayout="horizontal"
-                           [step]="1"
-                           [disabled]="readOnly()!"
+                           [step]="pointStepSize()"
+                           [disabled]="readOnly()"
                            decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
                            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
-                           (onInput)="onInputChange()">
-            </p-inputNumber>
+                           (onInput)="onInputChange()"/>
           </td>
           <td>
             <p-button icon="pi pi-times"
