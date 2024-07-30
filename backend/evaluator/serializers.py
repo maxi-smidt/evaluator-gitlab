@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Avg, Count
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
@@ -39,21 +39,27 @@ class CourseInstanceSerializer(SimpleCourseInstanceSerializer):
 
 class AssignmentInstanceSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='assignment.name')
-    max_participants = serializers.SerializerMethodField()
-    corrected_participants = serializers.SerializerMethodField()
+    participants_left = serializers.SerializerMethodField()
 
     class Meta:
         model = AssignmentInstance
-        fields = ['id', 'name', 'due_to', 'status', 'max_participants', 'corrected_participants']
+        fields = ['id', 'name', 'due_to', 'status', 'participants_left']
 
-    def get_max_participants(self, obj):
-        return obj.course_instance.courseenrollment_set.filter(~Q(group=-1)).count()
-
-    def get_corrected_participants(self, obj):
-        return obj.co_assignment_instance.filter(
-            ~Q(student__courseenrollment__group=-1),
-            Q(status=Correction.Status.CORRECTED) | Q(status=Correction.Status.NOT_SUBMITTED)
-        ).count()
+    @staticmethod
+    def get_participants_left(obj):  # TODO log if amount of corrections exceeds 1 --> mistake happened
+        participants_left = obj.course_instance.courseenrollment_set.filter(~Q(group=-1)).annotate(
+            correction_count=Count(
+                'student__co_student',
+                filter=Q(
+                    student__co_student__assignment_instance=obj,
+                    student__co_student__status__in=[
+                        Correction.Status.CORRECTED,
+                        Correction.Status.NOT_SUBMITTED
+                    ]
+                )
+            )
+        ).filter(correction_count=0).count()
+        return participants_left
 
 
 class DetailCourseInstanceSerializer(CourseInstanceSerializer):
@@ -105,7 +111,8 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
         model = CourseInstance
         fields = ['grouped_students']
 
-    def get_grouped_students(self, obj):
+    @staticmethod
+    def get_grouped_students(obj):
         enrollments = CourseEnrollment.objects.filter(course_instance=obj).order_by('student__last_name')
 
         grouped = defaultdict(list)
@@ -120,7 +127,8 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
             self.update_groups(grouped_students, instance)
         return super().update(instance, validated_data)
 
-    def update_groups(self, grouped_students, course_instance):
+    @staticmethod
+    def update_groups(grouped_students, course_instance):
         for group, students in grouped_students.items():
             for student in students:
                 enrollment = CourseEnrollment.objects.get(course_instance=course_instance, student_id=student['id'])
@@ -129,7 +137,8 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
 
 
 class GroupedStudentSerializer(serializers.Serializer):
-    def get_grouped_students(self, course_instance, assignment_instance=None):
+    @staticmethod
+    def get_grouped_students(course_instance, assignment_instance=None):
         enrollments = CourseEnrollment.objects.filter(course_instance=course_instance).exclude(group=-1)
         result = defaultdict(list)
         for enrollment in enrollments:
@@ -151,7 +160,8 @@ class DetailAssignmentInstanceSerializer(AssignmentInstanceSerializer):
     class Meta(AssignmentInstanceSerializer.Meta):
         fields = AssignmentInstanceSerializer.Meta.fields + ['grouped_students', 'target_groups']
 
-    def get_grouped_students(self, assignment_instance):
+    @staticmethod
+    def get_grouped_students(assignment_instance):
         serializer = GroupedStudentSerializer(assignment_instance)
         return serializer.data
 
@@ -197,10 +207,12 @@ class CorrectionSerializer(serializers.ModelSerializer):
         fields = ['id', 'tutor_username', 'student', 'assignment', 'expense', 'points', 'status', 'draft', 'student_id',
                   'assignment_id', 'late_submitted_days']
 
-    def get_assignment(self, obj):
+    @staticmethod
+    def get_assignment(obj):
         return MiniAssignmentSerializer(instance=obj.assignment_instance.assignment).data
 
-    def get_tutor_username(self, obj):
+    @staticmethod
+    def get_tutor_username(obj):
         return obj.tutor.username
 
     def create(self, validated_data):
@@ -231,7 +243,8 @@ class TutorAIGroupsSerializer(serializers.ModelSerializer):
         model = AssignmentInstance
         fields = ['id', 'assignment_name', 'groups']
 
-    def get_assignment_name(self, obj):
+    @staticmethod
+    def get_assignment_name(obj):
         return obj.assignment.name
 
     def get_groups(self, obj):
@@ -251,11 +264,13 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
         model = CourseInstance
         fields = ['partition', 'groups']
 
-    def get_groups(self, obj):
+    @staticmethod
+    def get_groups(obj):
         return list(CourseEnrollment.objects.filter(course_instance_id=obj).exclude(group=-1)
                     .values_list('group', flat=True).distinct().order_by('group'))
 
-    def get_partition(self, obj):
+    @staticmethod
+    def get_partition(obj):
         partition = []
         for tutor in obj.tutors.all().order_by('last_name', 'first_name'):
             data = {'tutor': TutorSerializer(tutor).data, 'assignments': []}
@@ -270,7 +285,8 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
             self.update_partition(partition)
         return super().update(instance, validated_data)
 
-    def update_partition(self, partition):
+    @staticmethod
+    def update_partition(partition):
         for part in partition:
             tutor = Tutor.objects.get(username=part['tutor']['username'])
             for assignment in part['assignments']:
@@ -297,3 +313,56 @@ class ReportSerializer(serializers.ModelSerializer):
         user = request.user
         validated_data['submitter'] = user
         return super().create(validated_data)
+
+
+class CourseInstanceChartSerializer(serializers.ModelSerializer):
+    data_points = serializers.SerializerMethodField()
+    data_expense = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CourseInstance
+        fields = ['data_points', 'data_expense']
+
+    def get_data_expense(self, obj):
+        return self.get_data(obj, 'expense')
+
+    def get_data_points(self, obj):
+        return self.get_data(obj, 'points')
+
+    @classmethod
+    def get_data(cls, course_instance: CourseInstance, col: str):
+        labels = [ai.assignment.name for ai in course_instance.assignment_instances.all().order_by('assignment__nr')]
+        datasets = [cls.make_specific_dataset(course_instance, col), cls.make_general_dataset(course_instance, col)]
+        return {'labels': labels, 'datasets': datasets}
+
+    @staticmethod
+    def make_general_dataset(course_instance: CourseInstance, col: str):
+        dataset = {'label': 'Gesamt', 'fill': False, 'tension': 0.4, 'borderDash': [5, 5], 'borderColor': 'grey'}
+        data = []
+        for assignment in course_instance.course.assignment_set.all().order_by('nr'):
+            total_average = []
+            for ai in assignment.assignmentinstance_set.all():
+                average = ai.co_assignment_instance.all().aggregate(Avg(col))[f'{col}__avg']
+                total_average.append(CourseInstanceChartSerializer.adapt_value(average, col))
+            total_average_without_none = [x for x in total_average if x is not None]
+            total_sum = sum(total_average_without_none)
+            total_length = len(total_average_without_none)
+            data.append(total_sum / total_length if total_length > 0 else None)
+        dataset['data'] = data
+        return dataset
+
+    @staticmethod
+    def make_specific_dataset(course_instance: CourseInstance, col: str):
+        dataset = {'label': 'Dieser Jahrgang', 'fill': False, 'tension': 0.4, 'borderColor': 'orange'}
+        data = []
+        for ai in course_instance.assignment_instances.all().order_by('assignment__nr'):
+            average = ai.co_assignment_instance.all().aggregate(Avg(col))[f'{col}__avg']
+            data.append(CourseInstanceChartSerializer.adapt_value(average, col))
+        dataset['data'] = data
+        return dataset
+
+    @staticmethod
+    def adapt_value(value, col):
+        if col == 'expense':
+            return value.total_seconds() / 3600 if value else None  # conversion to hours
+        return value

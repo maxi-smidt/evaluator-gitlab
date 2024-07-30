@@ -39,7 +39,9 @@
   "course": {
     "courseView": {
       "title-assignments": "Übungsaufgaben",
-      "title-ranking": "Kurs Ranking"
+      "title-chart": "Statistiken",
+      "chart-expense": "Zeitaufwand",
+      "chart-points": "Punkte"
     },
     "editView": {
       "group": "Gruppe",

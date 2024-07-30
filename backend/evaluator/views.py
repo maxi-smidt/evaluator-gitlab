@@ -141,3 +141,8 @@ class DegreeProgramListView(ListAPIView):
 class ReportCreateView(CreateAPIView):
     serializer_class = serializers.ReportSerializer
     queryset = Report.objects.all()
+
+
+class CourseInstanceChartRetrieveView(RetrieveAPIView):
+    serializer_class = serializers.CourseInstanceChartSerializer
+    queryset = CourseInstance.objects.all()

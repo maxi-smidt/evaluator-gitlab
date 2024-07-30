@@ -7,6 +7,9 @@ import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {NgClass} from "@angular/common";
 import {BadgeModule} from "primeng/badge";
 import {SimpleAssignment} from "../models/assignment.model";
+import {ChartData} from "../models/chart-data.model";
+import {ChartModule} from "primeng/chart";
+import {TabViewModule} from "primeng/tabview";
 
 @Component({
   selector: 'ms-course-view',
@@ -16,11 +19,17 @@ import {SimpleAssignment} from "../models/assignment.model";
     ButtonModule,
     TranslatePipe,
     NgClass,
-    BadgeModule
+    BadgeModule,
+    ChartModule,
+    TabViewModule
   ]
 })
 export class CourseViewComponent implements OnInit {
   courseInstance: DetailCourseInstance | undefined;
+
+  expenseChartData: ChartData | undefined;
+  pointsChartData: ChartData | undefined;
+  options: {} | undefined;
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
@@ -33,15 +42,57 @@ export class CourseViewComponent implements OnInit {
       next: course => {
         this.courseInstance = course;
       }
-    })
+    });
+
+    this.courseService.getChartData(courseId).subscribe({
+      next: data => {
+        this.expenseChartData = data.dataExpense;
+        this.pointsChartData = data.dataPoints;
+      }
+    });
+
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    this.options = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        }
+      }
+    };
   }
 
-  getExerciseStateClass(bE: SimpleAssignment) {
-    if (bE.correctedParticipants === bE.maxParticipants) {
+  getExerciseStateClass(simpleAssignment: SimpleAssignment) {
+    if (simpleAssignment.participantsLeft === 0) {
       return 'list-group-item-primary';
     }
 
-    switch (bE.status) {
+    switch (simpleAssignment.status) {
       case 'EXPIRED':
         return 'list-group-item-danger';
       case 'INACTIVE':

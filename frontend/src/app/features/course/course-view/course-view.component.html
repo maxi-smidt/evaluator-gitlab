@@ -8,7 +8,7 @@
 </div>
 
 <div class="row gx-5">
-  <div class="col-md-6 col-sm-12">
+  <div class="col-md-5 col-sm-12">
     <h4>{{ 'course.courseView.title-assignments' | translate }}</h4>
     <ul class="list-group">
       @for (assignment of courseInstance?.assignments; track assignment.id) {
@@ -19,9 +19,9 @@
           (click)="onAssignmentClick(assignment)"
           (keydown.enter)="onAssignmentClick(assignment)">
           {{ assignment.name }}
-          @if (assignment.status !== 'INACTIVE' && (assignment.maxParticipants - assignment.correctedParticipants) !== 0) {
+          @if (assignment.status !== 'INACTIVE' && assignment.participantsLeft > 0) {
             <span>
-              <p-badge [value]="(assignment.maxParticipants - assignment.correctedParticipants).toString()"></p-badge>
+              <p-badge [value]="assignment.participantsLeft.toString()"></p-badge>
             </span>
           }
         </li>
@@ -29,8 +29,16 @@
     </ul>
 
   </div>
-  <div class="col-lg-6 col-sm-12">
-    <h4>{{ 'course.courseView.title-ranking' | translate }}</h4>
-    <!--TODO ranks-->
+  <div class="col-lg-7 col-sm-12">
+    <h4>{{ 'course.courseView.title-chart' | translate }}</h4>
+
+    <p-tabView>
+      <p-tabPanel header="{{ 'course.courseView.chart-expense' | translate }}">
+        <p-chart type="line" [data]="expenseChartData" [options]="options"/>
+      </p-tabPanel>
+      <p-tabPanel header="{{ 'course.courseView.chart-points' | translate }}">
+        <p-chart type="line" [data]="pointsChartData" [options]="options"/>
+      </p-tabPanel>
+    </p-tabView>
   </div>
 </div>

@@ -10,6 +10,5 @@ export interface SimpleAssignment {
   name: string,
   dueTo: Date,
   status: string,
-  maxParticipants: number,
-  correctedParticipants: number
+  participantsLeft: number
 }

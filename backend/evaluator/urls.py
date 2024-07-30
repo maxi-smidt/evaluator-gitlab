@@ -15,4 +15,5 @@ urlpatterns = [
     path('degree-program/create/', views.DegreeProgramCreateView.as_view(), name="degree_program_create"),
     path('degree-programs/', views.DegreeProgramListView.as_view(), name="degree_programs"),
     path('report/', views.ReportCreateView.as_view(), name="report"),
+    path('course-chart/<int:pk>/', views.CourseInstanceChartRetrieveView.as_view(), name="course_chart"),
 ]

@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {CourseInstance, DetailCourseInstance, DetailLevel, SimpleCourseInstance} from "../models/course.model";
+import {DetailLevel, SimpleCourseInstance} from "../models/course.model";
 import {Assignment} from "../models/assignment.model";
 import {Student} from "../models/student.model";
 import {EditPartition} from "../models/edit-partition.model";
 import {HttpClient} from "@angular/common/http";
+import {ChartData} from "../models/chart-data.model";
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +44,9 @@ export class CourseService {
   putAssignmentPartition(courseId: number, partition: EditPartition[]) {
     return this.http.put<{ partition: EditPartition[], groups: number[] }>(`course-partition/${courseId}/`,
       {partition: partition});
+  }
+
+  getChartData(courseId: number) {
+    return this.http.get<{ dataExpense: ChartData, dataPoints: ChartData }>(`course-chart/${courseId}/`);
   }
 }
