@@ -1,6 +1,15 @@
-<h3>{{ 'home.courses' | translate }}</h3>
-<div class="d-flex flex-row border rounded row row-cols-md-4 row-cols-sm-3 row-cols-2">
+<div class="d-flex align-items-center">
+  <h3 class="me-3">{{ 'home.courses' | translate }}</h3>
+
+  <p-dropdown
+    [options]="yearItems"
+    [(ngModel)]="selectedYear"/>
+</div>
+
+<div class="d-flex flex-row border rounded row row-cols-md-4 row-cols-sm-3 row-cols-2 mt-3">
   @for (courseInstance of courseInstances; track courseInstance) {
-    <ms-course-card [courseInstance]="courseInstance"></ms-course-card>
+    @if (selectedYear === allString || courseInstance.year.toString() === selectedYear) {
+      <ms-course-card [courseInstance]="courseInstance"></ms-course-card>
+    }
   }
 </div>
