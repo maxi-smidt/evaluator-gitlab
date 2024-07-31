@@ -153,5 +153,16 @@
     "allow-late-submission": "Verspätete Abgabe (Joker) erlaubt",
     "late-submission-penalty": "Abzug für verspätete Abgabe",
     "step-size": "Punkt-Schritt bei Bewertung"
+  },
+  "plag-scan": {
+    "title": "Plagiat Scanner",
+    "error": "JPlag funktioniert gerade nicht :(",
+    "jplag-url": "https://jplag.github.io/JPlag/",
+    "result": "JPlag_Scan.zip",
+    "choose": "Auswählen",
+    "cancel": "Abbrechen",
+    "success": "Ziehe das heruntergeladene File in den JPlag Report Viewer.",
+    "language": "Wähle eine Sprache",
+    "info":  "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
   }
 }

@@ -1,0 +1,30 @@
+<p-toast></p-toast>
+
+<h2 class="mb-3">{{ 'plag-scan.title' | translate }}</h2>
+
+<p-blockUI [blocked]="isLoading">
+  <p-progressSpinner ariaLabel="loading"/>
+</p-blockUI>
+
+<p>{{ 'plag-scan.info' | translate }}</p>
+
+<div class="mb-3">
+  <p-dropdown
+    [options]="languages"
+    [(ngModel)]="selectedLanguage"
+    optionLabel="title"
+    placeholder="{{'plag-scan.language' | translate }}"/>
+</div>
+
+<p-fileUpload
+  #fileUpload
+  name="zipfile"
+  [chooseLabel]="translationService.translate('plag-scan.choose')"
+  [cancelLabel]="translationService.translate('plag-scan.cancel')"
+  [customUpload]="true"
+  [showUploadButton]="selectedLanguage !== undefined"
+  (uploadHandler)="onUpload()"
+  (onSelect)="processZipFile($event)"
+  [multiple]="false"
+  accept=".zip"
+  [maxFileSize]="100000000"/>

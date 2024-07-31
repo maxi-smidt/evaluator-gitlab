@@ -15,7 +15,6 @@ from datetime import timedelta
 
 from dotenv import load_dotenv, find_dotenv
 
-
 project_folder = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 load_dotenv(find_dotenv())
 
@@ -62,6 +61,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
     ),
 }
 
@@ -180,3 +182,5 @@ LOGGING = {
 }
 
 LOGGING = None
+
+JPLAG_PATH = os.environ.get('PATH_TO_JPLAG')

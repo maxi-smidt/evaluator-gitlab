@@ -1,6 +1,7 @@
 from django.db.models import Q, Avg, Count
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from .models import DegreeProgram, CourseInstance, AssignmentInstance, Correction, Student, CourseEnrollment, \
     TutorAssignment, Assignment, Report
@@ -218,6 +219,8 @@ class CorrectionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         student_id = validated_data.pop('student_id')
         assignment_id = validated_data.pop('assignment_id')
+        if Correction.objects.filter(student_id=student_id, assignment_instance_id=assignment_id).exists():
+            raise ValidationError({"detail": "A correction for this student and assignment already exists."})
         tutor = Tutor.objects.get(pk=self.context['request'].user.id)
         student = get_object_or_404(Student, pk=student_id)
         ai = get_object_or_404(AssignmentInstance, pk=assignment_id)

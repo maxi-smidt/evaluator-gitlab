@@ -40,7 +40,7 @@ import {CourseInstance, DetailLevel} from "../models/course.model";
   ]
 })
 export class EvaluateViewComponent implements OnInit, OnDestroy {
-  interval: number = 0;
+  interval: any = 0;
   courseId: number;
   assignmentId: number;
   correctionId: number | undefined;
