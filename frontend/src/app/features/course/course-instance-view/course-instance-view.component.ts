@@ -6,14 +6,14 @@ import {ButtonModule} from "primeng/button";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {NgClass} from "@angular/common";
 import {BadgeModule} from "primeng/badge";
-import {SimpleAssignment} from "../models/assignment.model";
+import {SimpleAssignmentInstance} from "../../assignment/models/assignment.model";
 import {ChartData} from "../models/chart-data.model";
 import {ChartModule} from "primeng/chart";
 import {TabViewModule} from "primeng/tabview";
 
 @Component({
-  selector: 'ms-course-view',
-  templateUrl: './course-view.component.html',
+  selector: 'ms-course-instance-view',
+  templateUrl: './course-instance-view.component.html',
   standalone: true,
   imports: [
     ButtonModule,
@@ -24,7 +24,7 @@ import {TabViewModule} from "primeng/tabview";
     TabViewModule
   ]
 })
-export class CourseViewComponent implements OnInit {
+export class CourseInstanceViewComponent implements OnInit {
   courseInstance: DetailCourseInstance | undefined;
 
   expenseChartData: ChartData | undefined;
@@ -87,7 +87,7 @@ export class CourseViewComponent implements OnInit {
     };
   }
 
-  getExerciseStateClass(simpleAssignment: SimpleAssignment) {
+  getExerciseStateClass(simpleAssignment: SimpleAssignmentInstance) {
     if (simpleAssignment.participantsLeft === 0) {
       return 'list-group-item-primary';
     }
@@ -102,7 +102,7 @@ export class CourseViewComponent implements OnInit {
     }
   }
 
-  onAssignmentClick(assignment: SimpleAssignment) {
+  onAssignmentClick(assignment: SimpleAssignmentInstance) {
     this.router.navigate(['assignment', assignment.id], {relativeTo: this.route}).then();
   }
 

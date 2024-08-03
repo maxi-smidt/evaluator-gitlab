@@ -1,0 +1,36 @@
+<h2>{{ 'degree-program.courses-view.course-instances' | translate }}</h2>
+
+<p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+  @for (obj of sortedCourses; track obj.course.id) {
+    <p-accordionTab>
+      <ng-template pTemplate="header">
+        <div class="d-flex align-items-center w-100">
+          <span class="font-bold white-space-nowrap">
+            {{ obj.course.name }}
+          </span>
+          <div class="ms-auto me-3">
+            <p-badge value="{{ obj.courseInstances.length }}" class="me-2"/>
+          </div>
+        </div>
+      </ng-template>
+
+      <p-dataView [value]="obj.courseInstances">
+        <ng-template pTemplate="list">
+          <div class="grid">
+            @for (courseInstance of obj.courseInstances; track courseInstance.id) {
+              <div class="col-12">
+                <div class="d-flex flex-row p-1 gap-3 border border-1 rounded-1 align-items-center">
+                  <h5 class="ms-1 mb-0">{{ courseInstance.course.abbreviation }}</h5>
+                  <p-tag value="{{ courseInstance.year }}" [rounded]="true" [severity]="$index === 0 ? 'success' : 'info'"/>
+                  <div class="ms-auto">
+                    <p-button icon="pi pi-arrow-right" size="small"/>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </ng-template>
+      </p-dataView>
+    </p-accordionTab>
+  }
+</p-accordion>

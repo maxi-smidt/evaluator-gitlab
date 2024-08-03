@@ -1,15 +1,27 @@
-import {SimpleAssignment} from "./assignment.model";
+import {Assignment, SimpleAssignmentInstance} from "../../assignment/models/assignment.model";
 
 
-export interface Course {
+export interface SimpleCourse {
+  id: number,
   name: string,
   abbreviation: string
+}
+
+export interface Course extends SimpleCourse {
+  fileName: string
+}
+
+/**
+ * Course and all its assignments.
+ */
+export interface DetailCourse extends SimpleCourse {
+  assignments: Assignment[];
 }
 
 export interface SimpleCourseInstance {
   id: number,
   year: number,
-  course: Course
+  course: SimpleCourse
 }
 
 export interface CourseInstance extends SimpleCourseInstance {
@@ -19,7 +31,7 @@ export interface CourseInstance extends SimpleCourseInstance {
 }
 
 export interface DetailCourseInstance extends CourseInstance {
-  assignments: SimpleAssignment[];
+  assignments: SimpleAssignmentInstance[];
 }
 
 export enum DetailLevel {

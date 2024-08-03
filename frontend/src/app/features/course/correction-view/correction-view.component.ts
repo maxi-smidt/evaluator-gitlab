@@ -22,8 +22,8 @@ import {CourseService} from "../services/course.service";
 import {CourseInstance, DetailLevel} from "../models/course.model";
 
 @Component({
-  selector: 'ms-evaluate-view',
-  templateUrl: './evaluate-view.component.html',
+  selector: 'ms-correction-view',
+  templateUrl: './correction-view.component.html',
   standalone: true,
   imports: [
     EvaluateTableComponent,
@@ -39,7 +39,7 @@ import {CourseInstance, DetailLevel} from "../models/course.model";
     ToggleButtonModule
   ]
 })
-export class EvaluateViewComponent implements OnInit, OnDestroy {
+export class CorrectionViewComponent implements OnInit, OnDestroy {
   interval: any = 0;
   courseId: number;
   assignmentId: number;

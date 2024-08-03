@@ -13,6 +13,7 @@ import {TranslationService} from "../../../shared/services/translation.service";
 import {TabMenuModule} from "primeng/tabmenu";
 import {EditGeneralComponent} from "./edit-general/edit-general.component";
 import {CourseInstance, DetailLevel} from "../models/course.model";
+import {AssignmentService} from "../../assignment/services/assignment.service";
 
 @Component({
   selector: 'ms-edit-view',
@@ -50,7 +51,8 @@ export class EditViewComponent implements OnInit {
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
-              private translationService: TranslationService) {
+              private translationService: TranslationService,
+              private assignmentService: AssignmentService) {
   }
 
   ngOnInit() {
@@ -73,7 +75,7 @@ export class EditViewComponent implements OnInit {
     });
 
     // group partition
-    this.courseService.getTutorAssignmentPartition(this.courseId).subscribe({
+    this.assignmentService.getTutorAssignmentPartition(this.courseId).subscribe({
       next: partition => {
         this.partition = partition.partition;
         this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));
@@ -163,7 +165,7 @@ export class EditViewComponent implements OnInit {
     }
 
     if (this.partitionHasChanged()) {
-      this.courseService.putAssignmentPartition(this.courseId, this.partition).subscribe({
+      this.assignmentService.putAssignmentPartition(this.courseId, this.partition).subscribe({
         next: partition => {
           this.partition = partition.partition;
           this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));

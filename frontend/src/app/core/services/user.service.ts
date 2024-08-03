@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {NewUser, User} from "../models/user.models";
+import {DetailUser, PasswordUser, User} from "../models/user.models";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, distinctUntilChanged, map, Observable, of, switchMap, tap} from "rxjs";
-import {SimpleCourseInstance} from "../../features/course/models/course.model";
 
 @Injectable({
   providedIn: 'root'
@@ -38,11 +37,21 @@ export class UserService {
     }
   }
 
-  getUserCourses() {
-    return this.http.get<SimpleCourseInstance[]>('courses/')
+  registerUser(user: PasswordUser) {
+    return this.http.post('create-user/', user);
   }
 
-  registerUser(user: NewUser) {
-    return this.http.post('create-user/', user);
+  getAllUsers(degreeProgram: string | null = null, excludeKnown: boolean | null = null) {
+    let extension = degreeProgram !== null ? `?dp=${degreeProgram}` : '';
+    extension += excludeKnown !== null ? `&exclude=${excludeKnown}` : '';
+    return this.http.get<DetailUser[]>(`users/${extension}`);
+  }
+
+  patchUser(username: string, patch: {}) {
+    return this.http.patch<DetailUser>(`user/?username=${username}`, patch);
+  }
+
+  getUserRoles() {
+    return this.http.get<string[]>('user-roles/');
   }
 }

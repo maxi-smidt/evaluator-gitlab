@@ -1,7 +1,11 @@
 {
   "common": {
     "noChangesInfo": "Keine Änderungen",
-    "lbl-username": "Username",
+    "username": "Nutzername",
+    "lastname": "Nachname",
+    "firstname": "Vorname",
+    "role": "Rolle",
+    "choose-role": "Wähle Rolle",
     "lbl-password": "Passwort",
     "btn-submit": "Abschicken",
     "btn-save": "Speichern",
@@ -9,7 +13,8 @@
       "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
       "header": "Bestätigung"
     },
-    "saved": "Gespeichert"
+    "saved": "Gespeichert",
+    "cancel": "Abbrechen"
   },
   "header": {
     "btn-home": "Home",
@@ -26,13 +31,17 @@
   "shared": {
     "forms": {
       "userForm": {
-        "title": "User Form",
-        "lbl-firstname": "Firstname",
-        "lbl-lastname": "Lastname",
-        "lbl-role": "Role",
-        "lbl-role-disabled": "Choose Role",
-        "error-500": "User already exists",
-        "error-else": "Could not create user"
+        "title": "Nutzer anlegen",
+        "error-500": "Nutzer existiert bereits",
+        "error-else": "Nutzer konnte nicht erstellt werden"
+      },
+      "course-form": {
+        "title": "Kurs anlegen",
+        "error-500": "Kurs existiert bereits",
+        "error-else": "Kurs konnte nicht erstellt werden",
+        "course-name": "Name",
+        "course-abbreviation": "Abkürzung",
+        "file-name": "Filename Template"
       }
     }
   },
@@ -50,8 +59,6 @@
     },
     "assignmentView": {
       "group": "Gruppe",
-      "last_name": "Nachname",
-      "first_name": "Vorname",
       "evaluation": "Bewertung",
       "status": "Status",
       "action": "Aktion",
@@ -85,7 +92,7 @@
           "Vorname",
           "Nachname",
           "Username",
-          "Role",
+          "Rolle",
           "Aktiv"
         ],
         "conf-header": "Changeset",
@@ -117,8 +124,6 @@
       ]
     },
     "dpdHome": {
-      "users": "User",
-      "courses": "Kurse",
       "role-choices": [
         "COURSE_LEADER",
         "TUTOR"
@@ -160,9 +165,46 @@
     "jplag-url": "https://jplag.github.io/JPlag/",
     "result": "JPlag_Scan.zip",
     "choose": "Auswählen",
-    "cancel": "Abbrechen",
     "success": "Ziehe das heruntergeladene File in den JPlag Report Viewer.",
     "language": "Wähle eine Sprache",
-    "info":  "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
+    "info": "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
+  },
+  "degree-program": {
+    "staff": "Personal",
+    "courses": "Kurse",
+    "classes": "Klassen",
+    "staff-view": {
+      "active-users": "Aktive Nutzer",
+      "all-users": "Alle Nutzer",
+      "new-user": "Neuen Nutzer anlegen",
+      "filter-username": "Suche nach Nutzernamen",
+      "filter-lastname": "Suche nach Nachnamen",
+      "filter-firstname": "Suche nach Vornamen",
+      "empty-table": "Keine Nutzer gefunden.",
+      "full-user-list": {
+        "title": "Benutzer Liste",
+        "role-choices": [
+          "COURSE_LEADER",
+          "TUTOR"
+        ],
+        "add": "Hinzufügen"
+      },
+      "staff-list": {
+        "title": "Personal Liste",
+        "remove": "Entfernen",
+        "active": "Aktiv"
+      }
+    },
+    "courses-view": {
+      "new-course": "Neuen Kurs anlegen",
+      "courses": "Alle Kurse",
+      "course-instances": "Kursinstanzen",
+      "course-list": {
+        "error": "Das Jahr muss mindestens diesem oder dem letzten Jahr entsprechen.",
+        "new-instance": "Neue Instanz",
+        "new-instance-info": "Trage das Jahr ein, in dem das Semester des Kurses beginnt.",
+        "year": "Jahr"
+      }
+    }
   }
 }

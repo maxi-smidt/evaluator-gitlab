@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet,} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {Assignment} from "../models/assignment.model";
-import {CourseService} from "../services/course.service";
+import {AssignmentInstance} from "../models/assignment.model";
 import {TranslationService} from "../../../shared/services/translation.service";
-import {CorrectionService} from "../services/correction.service";
+import {CorrectionService} from "../../course/services/correction.service";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
 import {AccordionModule} from "primeng/accordion";
@@ -12,10 +11,11 @@ import {TableModule} from "primeng/table";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {TagModule} from "primeng/tag";
 import {NgForOf, NgIf} from "@angular/common";
+import {AssignmentService} from "../services/assignment.service";
 
 @Component({
-  selector: 'ms-assignment-view',
-  templateUrl: './assignment-view.component.html',
+  selector: 'ms-assignment-instance-view',
+  templateUrl: './assignment-instance-view.component.html',
   standalone: true,
   imports: [
     ConfirmDialogModule,
@@ -29,23 +29,23 @@ import {NgForOf, NgIf} from "@angular/common";
     NgIf
   ]
 })
-export class AssignmentViewComponent implements OnInit {
-  assignment: Assignment;
+export class AssignmentInstanceViewComponent implements OnInit {
+  assignment: AssignmentInstance;
   cols: {field: string, header: string}[];
   groups: string[];
   assignmentId: number;
   courseId: number;
 
-  constructor(private courseService: CourseService,
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private translationService: TranslationService,
               private correctionService: CorrectionService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private assignmentService: AssignmentService) {
     this.cols = [
-      {field: 'lastName', header: this.translate('course.assignmentView.last_name')},
-      {field: 'firstName', header: this.translate('course.assignmentView.first_name')},
+      {field: 'lastName', header: this.translate('common.lastname')},
+      {field: 'firstName', header: this.translate('common.firstname')},
       {field: 'points', header: this.translate('course.assignmentView.evaluation')},
       {field: 'status', header: this.translate('course.assignmentView.status')},
       {field: 'action', header: this.translate('course.assignmentView.action')},
@@ -54,14 +54,14 @@ export class AssignmentViewComponent implements OnInit {
     this.groups = [];
     this.assignmentId = -1;
     this.courseId = -1;
-    this.assignment = {} as Assignment;
+    this.assignment = {} as AssignmentInstance;
   }
 
   ngOnInit() {
     this.courseId = this.route.parent!.parent!.snapshot.params['courseId'];
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
 
-    this.courseService.getFullAssignment(this.assignmentId).subscribe({
+    this.assignmentService.getFullAssignment(this.assignmentId).subscribe({
       next: value => {
         this.assignment = value;
         this.groups = Object.keys(this.assignment.groupedStudents);
