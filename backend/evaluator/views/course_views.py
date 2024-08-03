@@ -15,9 +15,9 @@ class CourseInstanceListView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if user.role == User.Role.TUTOR:
-            return Tutor.objects.get().ci_tutors.all()
+            return Tutor.objects.get(user=user).ci_tutors.all()
         elif user.role == User.Role.DPD:
-            abbreviation = self.request.query_params.get()
+            abbreviation = self.request.query_params.get('dp')
             return (CourseInstance.objects.filter(course__degree_program__abbreviation=abbreviation)
                     .order_by('-year', 'course__name'))
         else:
@@ -28,7 +28,7 @@ class CourseInstanceDetailView(RetrieveUpdateAPIView):
     lookup_field = 'course_id'
 
     def get_serializer_class(self):
-        level = self.request.query_params.get()
+        level = self.request.query_params.get('level')
         if level == 'simple':
             return course_serializers.SimpleCourseInstanceSerializer
         if level == 'detail':
@@ -39,7 +39,7 @@ class CourseInstanceDetailView(RetrieveUpdateAPIView):
         user = self.request.user
         course_id = self.kwargs.get(self.lookup_field)
         if user.role == User.Role.TUTOR:
-            tutor = Tutor.objects.get()
+            tutor = Tutor.objects.get(user=user)
             return tutor.ci_tutors.filter(pk=course_id)
         else:
             raise PermissionDenied("You do not have permission to access this resource.")
@@ -56,7 +56,7 @@ class CourseListView(ListAPIView):
     permission_classes = [IsDegreeProgramDirector]
 
     def get_queryset(self):
-        dp_abbreviation = self.request.query_params.get()
+        dp_abbreviation = self.request.query_params.get('dp')
         return Course.objects.filter(degree_program__abbreviation=dp_abbreviation).order_by('name')
 
 
