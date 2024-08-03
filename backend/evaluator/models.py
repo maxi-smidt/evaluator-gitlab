@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from enum import Enum
+
 # noinspection PyUnresolvedReferences
 from user.models import DegreeProgramDirector, CourseLeader, Tutor, User
 
@@ -267,3 +268,20 @@ class Report(models.Model):
 
     def __str__(self):
         return f"T{self.type}-Report: {self.title} ({self.submitter})"
+
+
+class UserDegreeProgram(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='udp_user',
+                             null=False)
+    degree_program = models.ForeignKey(DegreeProgram,
+                                       on_delete=models.CASCADE,
+                                       related_name='udp_degree_program',
+                                       null=False)
+
+    class Meta:
+        unique_together = ('user', 'degree_program')
+
+    def __str__(self):
+        return f"{self.degree_program} - {self.user}"
