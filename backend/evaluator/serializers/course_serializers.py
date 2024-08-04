@@ -1,12 +1,11 @@
 from collections import defaultdict
 
 from django.db.models import Avg
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
 from ..models import CourseInstance, CourseEnrollment, AssignmentInstance, TutorAssignment, Course
-from .assignment_serializers import AssignmentInstanceSerializer, TutorAIGroupsSerializer, AssignmentSerializer
+from .assignment_serializers import AssignmentInstanceSerializer, TutorAIGroupsSerializer, SimpleAssignmentSerializer
 from .basic_serializers import StudentSerializer
 # noinspection PyUnresolvedReferences
 from user.serializers import TutorSerializer
@@ -26,7 +25,7 @@ class CourseSerializer(SimpleCourseSerializer):
 
 
 class DetailCourseSerializer(SimpleCourseSerializer):
-    assignments = AssignmentSerializer(source='assignment_set', many=True)
+    assignments = SimpleAssignmentSerializer(source='assignment_set', many=True)
 
     class Meta(CourseSerializer.Meta):
         fields = CourseSerializer.Meta.fields + ['assignments']

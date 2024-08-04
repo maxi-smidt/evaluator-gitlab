@@ -30,3 +30,8 @@ class IsClOrDpdOrAdmin(BasePermission):
 class IsDpdOrAdmin(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role in [User.Role.ADMIN, User.Role.DPD]
+
+
+class IsDpdOrCl(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role in [User.Role.CL, User.Role.DPD]

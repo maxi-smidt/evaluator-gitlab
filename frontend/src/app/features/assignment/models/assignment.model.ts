@@ -13,8 +13,23 @@ export interface SimpleAssignmentInstance {
   participantsLeft: number
 }
 
-export interface Assignment {
+export interface SimpleAssignment {
   id: number
+  name: string,
+  points: number
+}
+
+export interface Assignment extends SimpleAssignment {
+  draft: Exercise[],
+  nr: number
+}
+
+interface Exercise {
+  name: string,
+  distribution: SubExercise[]
+}
+
+interface SubExercise {
   name: string,
   points: number
 }

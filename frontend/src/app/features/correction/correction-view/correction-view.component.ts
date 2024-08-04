@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
-import {Correction, Draft} from "../models/correction.model";
-import {CorrectionService} from "../services/correction.service";
+import {Correction, CorrectionDraft} from "../models/correction.model";
+import {CorrectionService} from "../../course/services/correction.service";
 import {EvaluateTableComponent} from "./evaluate-table/evaluate-table.component";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
@@ -16,10 +16,10 @@ import {tap} from "rxjs";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {ToggleButtonModule} from "primeng/togglebutton";
-import {Student} from "../models/student.model";
+import {Student} from "../../course/models/student.model";
 import {TranslationService} from "../../../shared/services/translation.service";
-import {CourseService} from "../services/course.service";
-import {CourseInstance, DetailLevel} from "../models/course.model";
+import {CourseService} from "../../course/services/course.service";
+import {CourseInstance, DetailLevel} from "../../course/models/course.model";
 
 @Component({
   selector: 'ms-correction-view',
@@ -70,7 +70,7 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
               private router: Router,
               private translationService: TranslationService,
               private courseService: CourseService) {
-    this.correction = {draft: {} as Draft, student: {} as Student, assignment: {points: -1, name: ""}} as Correction;
+    this.correction = {draft: {} as CorrectionDraft, student: {} as Student, assignment: {points: -1, name: ""}} as Correction;
     this.course = {pointStepSize: 0} as CourseInstance;
     this.correctionBefore = {} as Correction;
     this.assignmentId = -1;

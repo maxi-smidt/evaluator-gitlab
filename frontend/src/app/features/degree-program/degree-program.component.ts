@@ -15,7 +15,7 @@ import {MenubarModule} from "primeng/menubar";
     <div style="margin-top: -30px">
       <p-menubar [model]="items"/>
     </div>
-    <div class="container mt-4">
+    <div class="container mt-4 border border-3 rounded-3 p-2">
       <router-outlet></router-outlet>
     </div>
   `

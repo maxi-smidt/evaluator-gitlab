@@ -1,8 +1,8 @@
 import {Component, computed, input} from '@angular/core';
-import {EditAssignment, EditPartition} from "../../models/edit-partition.model";
+import {EditAssignment, EditPartition} from "../../../models/edit-partition.model";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
-import {SimpleUser} from "../../../../core/models/user.models";
+import {SimpleUser} from "../../../../../core/models/user.models";
 
 @Component({
   selector: 'ms-edit-partition',

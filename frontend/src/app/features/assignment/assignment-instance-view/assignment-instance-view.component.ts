@@ -61,7 +61,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
     this.courseId = this.route.parent!.parent!.snapshot.params['courseId'];
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
 
-    this.assignmentService.getFullAssignment(this.assignmentId).subscribe({
+    this.assignmentService.getFullAssignmentInstance(this.assignmentId).subscribe({
       next: value => {
         this.assignment = value;
         this.groups = Object.keys(this.assignment.groupedStudents);

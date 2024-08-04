@@ -1,9 +1,11 @@
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
 
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor
-from ..models import AssignmentInstance
+# noinspection PyUnresolvedReferences
+from user.permissions import IsDpdOrCl
+from ..models import AssignmentInstance, Assignment
 from ..serializers import assignment_serializers
 
 
@@ -18,3 +20,9 @@ class AssignmentInstanceDetailView(RetrieveAPIView):
             return AssignmentInstance.objects.filter(course_instance__in=cis, pk=assignment_id)
         else:
             raise PermissionDenied("You do not have permission to access this resource.")
+
+
+class AssignmentRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    serializer_class = assignment_serializers.AssignmentSerializer
+    queryset = Assignment.objects.all()
+    permission_classes = [IsDpdOrCl]

@@ -1,4 +1,4 @@
-import {Student} from "./student.model";
+import {Student} from "../../course/models/student.model";
 
 export interface Correction {
   id: number,
@@ -8,7 +8,7 @@ export interface Correction {
   expense: string | null,
   points: number,
   status: string,
-  draft: Draft,
+  draft: CorrectionDraft,
   lateSubmittedDays: number
 }
 
@@ -17,7 +17,7 @@ interface CorrectionAssignment {
   points: number
 }
 
-export interface Draft {
+export interface CorrectionDraft {
   annotations: Entry[];
   exercise: Exercise[];
 }

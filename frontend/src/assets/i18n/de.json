@@ -206,5 +206,14 @@
         "year": "Jahr"
       }
     }
+  },
+  "assignment": {
+    "name": "Bezeichnung",
+    "info": "Änderungen hier betreffen lediglich zukünftige Kursinstanzen.",
+    "title": "Assignment:",
+    "number": "Folgenummer",
+    "points": "Punkte",
+    "draft": "Draft",
+    "example-draft": "Beispiel Draft"
   }
 }

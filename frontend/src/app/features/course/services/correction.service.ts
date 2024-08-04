@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Correction} from "../models/correction.model";
+import {Correction} from "../../correction/models/correction.model";
 import {HttpClient} from "@angular/common/http";
 import {FileDownloadService} from "../../../shared/services/file-download.service";
 

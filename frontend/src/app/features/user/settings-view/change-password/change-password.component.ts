@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
+import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {SettingsService} from "../services/settings.service";
 import {MessageService} from "primeng/api";
-import {TranslationService} from "../../../shared/services/translation.service";
+import {TranslationService} from "../../../../shared/services/translation.service";
 import {ToastModule} from "primeng/toast";
 
 @Component({

@@ -1,4 +1,4 @@
-import {Assignment, SimpleAssignmentInstance} from "../../assignment/models/assignment.model";
+import {SimpleAssignment, SimpleAssignmentInstance} from "../../assignment/models/assignment.model";
 
 
 export interface SimpleCourse {
@@ -15,7 +15,7 @@ export interface Course extends SimpleCourse {
  * Course and all its assignments.
  */
 export interface DetailCourse extends SimpleCourse {
-  assignments: Assignment[];
+  assignments: SimpleAssignment[];
 }
 
 export interface SimpleCourseInstance {

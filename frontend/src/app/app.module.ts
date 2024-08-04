@@ -7,7 +7,7 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {JwtInterceptor} from "./core/interceptors/jwt.interceptor";
 import {HeaderComponent} from './core/layout/header/header.component';
-import {SettingsComponent} from './features/settings/settings.component';
+import {SettingsViewComponent} from './features/user/settings-view/settings-view.component';
 import {ConfirmationService, MessageService} from "primeng/api";
 import {TranslationService} from "./shared/services/translation.service";
 import {ApiInterceptor} from "./core/interceptors/api.interceptor";
@@ -40,7 +40,7 @@ function loadTranslations(translationService: TranslationService) {
     TranslatePipe,
     HeaderComponent,
     HomeComponent,
-    SettingsComponent
+    SettingsViewComponent
   ],
   providers: [
     {

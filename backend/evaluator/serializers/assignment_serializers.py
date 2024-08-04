@@ -128,7 +128,13 @@ class TutorAIGroupsSerializer(serializers.ModelSerializer):
         return groups
 
 
-class AssignmentSerializer(serializers.ModelSerializer):
+class SimpleAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ['id', 'name', 'points']
+
+
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assignment
+        fields = '__all__'

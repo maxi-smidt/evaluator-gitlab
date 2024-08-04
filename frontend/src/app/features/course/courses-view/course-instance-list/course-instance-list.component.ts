@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
-import {CourseService} from "../../../course/services/course.service";
-import {SimpleCourse, SimpleCourseInstance} from "../../../course/models/course.model";
+import {CourseService} from "../../services/course.service";
+import {SimpleCourse, SimpleCourseInstance} from "../../models/course.model";
 import {AccordionModule} from "primeng/accordion";
 import {BadgeModule} from "primeng/badge";
 import {Button} from "primeng/button";

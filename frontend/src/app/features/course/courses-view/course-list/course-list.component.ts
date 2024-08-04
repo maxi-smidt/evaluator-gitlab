@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CourseService} from "../../../course/services/course.service";
+import {CourseService} from "../../services/course.service";
 import {AccordionModule} from "primeng/accordion";
 import {BadgeModule} from "primeng/badge";
-import {DetailCourse} from "../../../course/models/course.model";
+import {DetailCourse} from "../../models/course.model";
 import {DataViewModule} from "primeng/dataview";
 import {NgClass} from "@angular/common";
 import {Button} from "primeng/button";
@@ -13,7 +13,7 @@ import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {TranslationService} from "../../../../shared/services/translation.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UrlParamService} from "../../../../shared/services/url-param.service";
 
 @Component({
@@ -43,7 +43,8 @@ export class CourseListComponent implements OnInit {
               private messageService: MessageService,
               private translationService: TranslationService,
               private route: ActivatedRoute,
-              private urlParamService: UrlParamService) {
+              private urlParamService: UrlParamService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -78,5 +79,9 @@ export class CourseListComponent implements OnInit {
         this.year = undefined;
       }
     });
+  }
+
+  routeToAssignment(assignmentId: number) {
+    this.router.navigate(['assignment', assignmentId]).then();
   }
 }

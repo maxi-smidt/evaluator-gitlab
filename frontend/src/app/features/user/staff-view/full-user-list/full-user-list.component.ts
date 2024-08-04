@@ -4,7 +4,7 @@ import {User} from "../../../../core/models/user.models";
 import {TableModule} from "primeng/table";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {Button} from "primeng/button";
-import {DegreeProgramService} from "../../services/degree-program.service";
+import {DegreeProgramService} from "../../../degree-program/services/degree-program.service";
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from "primeng/toast";

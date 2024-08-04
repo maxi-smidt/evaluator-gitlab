@@ -1,8 +1,8 @@
 import {Component, effect, input} from '@angular/core';
-import {CourseInstance} from "../../models/course.model";
+import {CourseInstance} from "../../../models/course.model";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {FormsModule} from "@angular/forms";
-import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
+import {TranslatePipe} from "../../../../../shared/pipes/translate.pipe";
 import {InputNumberModule} from "primeng/inputnumber";
 
 @Component({

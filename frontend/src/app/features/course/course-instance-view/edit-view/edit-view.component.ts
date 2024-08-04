@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
-import {Student} from "../models/student.model";
-import {EditPartition} from "../models/edit-partition.model";
-import {CourseService} from "../services/course.service";
+import {Student} from "../../models/student.model";
+import {EditPartition} from "../../models/edit-partition.model";
+import {CourseService} from "../../services/course.service";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {EditGroupComponent} from "./edit-group/edit-group.component";
 import {EditPartitionComponent} from "./edit-partition/edit-partition.component";
-import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
-import {TranslationService} from "../../../shared/services/translation.service";
+import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
+import {TranslationService} from "../../../../shared/services/translation.service";
 import {TabMenuModule} from "primeng/tabmenu";
 import {EditGeneralComponent} from "./edit-general/edit-general.component";
-import {CourseInstance, DetailLevel} from "../models/course.model";
-import {AssignmentService} from "../../assignment/services/assignment.service";
+import {CourseInstance, DetailLevel} from "../../models/course.model";
+import {AssignmentService} from "../../../assignment/services/assignment.service";
 
 @Component({
   selector: 'ms-edit-view',

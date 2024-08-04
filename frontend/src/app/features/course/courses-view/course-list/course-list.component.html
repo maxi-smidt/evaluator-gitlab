@@ -15,6 +15,7 @@
           </div>
           <p-button icon="pi pi-plus" severity="success" (onClick)="onNewInstanceClick($event, course.id)" size="small"
                     label="{{ 'degree-program.courses-view.course-list.new-instance' | translate }}"/>
+          <p-button class="ms-2" icon="pi pi-arrow-right" size="small"/>
         </div>
       </ng-template>
 
@@ -26,7 +27,7 @@
                 <div class="d-flex flex-row p-1 gap-3 border border-1 rounded-1 align-items-center">
                   <h5 class="ms-1 mb-0">{{ assignment.name }}</h5>
                   <div class="ms-auto">
-                    <p-button icon="pi pi-arrow-right" size="small"/>
+                    <p-button icon="pi pi-arrow-right" size="small" (onClick)="routeToAssignment(assignment.id)"/>
                   </div>
                 </div>
               </div>
@@ -40,9 +41,11 @@
 
 <p-dialog header="{{ 'degree-program.courses-view.course-list.new-instance' | translate }}" [modal]="true"
           [(visible)]="dialogVisible">
-  <span class="p-text-secondary block mb-5">{{ 'degree-program.courses-view.course-list.new-instance-info' | translate }}</span>
+  <span
+    class="p-text-secondary block mb-5">{{ 'degree-program.courses-view.course-list.new-instance-info' | translate }}</span>
   <div class="flex align-items-center gap-3 mt-3 mb-3">
-    <label for="year" class="font-semibold w-6rem">{{ 'degree-program.courses-view.course-list.year' | translate }}</label>
+    <label for="year"
+           class="font-semibold w-6rem">{{ 'degree-program.courses-view.course-list.year' | translate }}</label>
     <p-inputOtp id="year" [(ngModel)]="year"/>
   </div>
   <div class="flex gap-2">

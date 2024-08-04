@@ -8,7 +8,7 @@ import {TableModule} from "primeng/table";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {FormsModule} from "@angular/forms";
 import {CheckboxModule} from "primeng/checkbox";
-import {DegreeProgramService} from "../../services/degree-program.service";
+import {DegreeProgramService} from "../../../degree-program/services/degree-program.service";
 import {ActivatedRoute} from "@angular/router";
 import {UrlParamService} from "../../../../shared/services/url-param.service";
 
